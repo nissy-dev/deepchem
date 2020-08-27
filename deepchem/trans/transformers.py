@@ -39,7 +39,8 @@ def get_grad_statistics(dataset):
   gradient for the system.
   """
   logger.warning(
-      "get_grad_statistics is DEPRECATED and will be removed in a future version of DeepChem. Manually compute force/energy statistics."
+      "get_grad_statistics is DEPRECATED and will be removed in a future version of DeepChem."
+      "Manually compute force/energy statistics."
   )
   if len(dataset) == 0:
     return None, None, None, None
@@ -144,7 +145,7 @@ class Transformer(object):
     raise NotImplementedError(
         "Each Transformer is responsible for its own transform_array method.")
 
-  def untransform(self, z):
+  def untransform(self, z: np.ndarray) -> np.ndarray:
     """Reverses stored transformation on provided data.
 
     Depending on whether `transform_X` or `transform_y` or `transform_w` was
@@ -158,7 +159,8 @@ class Transformer(object):
 
     Returns
     -------
-    ztrans
+    ztrans: np.ndarray
+      Array which was untransformed by this class.
     """
     raise NotImplementedError(
         "Each Transformer is responsible for its own untransform method.")
@@ -167,7 +169,7 @@ class Transformer(object):
                 dataset: Dataset,
                 parallel: bool = False,
                 out_dir: Optional[str] = None,
-                **kwargs):
+                **kwargs) -> Dataset:
     """Transforms all internally stored data in dataset.
 
     This method transforms all internal data in the provided dataset by using
@@ -180,15 +182,16 @@ class Transformer(object):
     dataset: dc.data.Dataset
       Dataset object to be transformed.
     parallel: bool, optional (default False)
-      if True, use multiple processes to transform the dataset in parallel.
+      If True, use multiple processes to transform the dataset in parallel.
       For large datasets, this might be faster.
-    out_dir: str, optional
+    out_dir: str, optional (default None)
       If `out_dir` is specified in `kwargs` and `dataset` is a `DiskDataset`,
       the output dataset will be written to the specified directory.
 
     Returns
     -------
-    a newly constructed Dataset object
+    Dataset
+      A newly constructed Dataset object
     """
     # Add this case in to handle non-DiskDataset that should be written to disk
     if out_dir is not None:
