@@ -188,9 +188,9 @@ def weighted_linear_sum(w: np.ndarray, x: np.ndarray) -> np.ndarray:
   Parameters
   ----------
   w: np.ndarray
-    A numpy array of shape `(N,)`
+    A numpy array of shape `(5,)`
   x: np.ndarray
-    A numpy array of shape `(N,)`
+    A numpy array of shape `(5, N, M)`
 
   Returns
   -------

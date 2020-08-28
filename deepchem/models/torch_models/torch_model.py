@@ -279,7 +279,8 @@ class TorchModel(Model):
 
     Returns
     -------
-    The average loss over the most recent checkpoint interval
+    float
+      The average loss over the most recent checkpoint interval
    """
     return self.fit_generator(
         self.default_generator(
@@ -328,7 +329,8 @@ class TorchModel(Model):
 
     Returns
     -------
-    The average loss over the most recent checkpoint interval
+    float
+      The average loss over the most recent checkpoint interval
     """
     if not isinstance(callbacks, SequenceCollection):
       callbacks = [callbacks]
@@ -460,7 +462,8 @@ class TorchModel(Model):
 
     Returns
     -------
-    the loss on the batch
+    float
+      The loss value for this single step.
     """
     self._ensure_built()
     dataset = NumpyDataset(X, y, w)
@@ -498,8 +501,11 @@ class TorchModel(Model):
       returns the values of the uncertainty outputs.
     other_output_types: list, optional
       Provides a list of other output_types (strings) to predict from model.
-    Returns:
-      a NumPy array of the model produces a single output, or a list of arrays
+
+    Returns
+    -------
+    np.ndarray or List[np.ndarray]
+      A NumPy array of the model produces a single output, or a list of arrays
       if it produces multiple outputs
     """
     results: Optional[List[np.ndarray]] = None
@@ -595,8 +601,11 @@ class TorchModel(Model):
       If specified, all outputs of this type will be retrieved
       from the model. If output_types is specified, outputs must
       be None.
-    Returns:
-      a NumPy array of the model produces a single output, or a list of arrays
+
+    Returns
+    -------
+    np.ndarray or List[np.ndarray]
+      A NumPy array of the model produces a single output, or a list of arrays
       if it produces multiple outputs
     """
     return self._predict(generator, transformers, False, output_types)
@@ -615,8 +624,9 @@ class TorchModel(Model):
 
     Returns
     -------
-    a NumPy array of the model produces a single output, or a list of arrays
-    if it produces multiple outputs
+    np.ndarray or List[np.ndarray]
+      A NumPy array of the model produces a single output, or a list of arrays
+      if it produces multiple outputs
     """
     dataset = NumpyDataset(X=X, y=None)
     return self.predict(dataset, transformers)
@@ -664,15 +674,16 @@ class TorchModel(Model):
     transformers: list of dc.trans.Transformers
       Transformers that the input data has been transformed by.  The output
       is passed through these transformers to undo the transformations.
-    output_types: String or list of Strings
+    output_types: str or List[str]
       If specified, all outputs of this type will be retrieved
       from the model. If output_types is specified, outputs must
       be None.
 
     Returns
     -------
-    a NumPy array of the model produces a single output, or a list of arrays
-    if it produces multiple outputs
+    np.ndarray or List[np.ndarray]
+      A NumPy array of the model produces a single output, or a list of arrays
+      if it produces multiple outputs
     """
     generator = self.default_generator(
         dataset, mode='predict', pad_batches=False)

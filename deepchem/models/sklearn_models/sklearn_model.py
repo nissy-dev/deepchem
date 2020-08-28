@@ -68,8 +68,7 @@ class SklearnModel(Model):
       if isinstance(self.model_instance, model_instance):
         self.use_weights = False
 
-  # FIXME: Return type "None" of "fit" incompatible with return type "float" in supertype "Model"
-  def fit(self, dataset: Dataset, **kwargs) -> None:  # type: ignore[override]
+  def fit(self, dataset: Dataset):
     """Fits scikit-learn model to data.
 
     Parameters
@@ -102,11 +101,9 @@ class SklearnModel(Model):
       the value is always a return value of `predict_proba`.
     """
     try:
-      # FIXME: BaseEstimator doesn't guarantee the class has `predict_proba` method.
-      return self.model_instance.predict_proba(X)  # type: ignore
+      return self.model_instance.predict_proba(X)
     except AttributeError:
-      # FIXME: BaseEstimator doesn't guarantee the class has `predict` method.
-      return self.model_instance.predict(X)  # type: ignore
+      return self.model_instance.predict(X)
 
   def predict(self, X: Dataset,
               transformers: List[Transformer] = []) -> np.ndarray:

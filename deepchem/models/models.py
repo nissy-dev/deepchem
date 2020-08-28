@@ -6,7 +6,7 @@ import os
 import shutil
 import tempfile
 import logging
-from typing import Any, List, Optional, Sequence
+from typing import List, Optional, Sequence
 
 import numpy as np
 from sklearn.base import BaseEstimator
@@ -115,7 +115,7 @@ class Model(BaseEstimator):
     """
     raise NotImplementedError
 
-  def fit(self, dataset: Dataset, nb_epoch: int = 10) -> float:
+  def fit(self, dataset: Dataset):
     """
     Fits a model on data in a Dataset object.
 
@@ -123,22 +123,9 @@ class Model(BaseEstimator):
     ----------
     dataset: Dataset
       the Dataset to train on
-    nb_epoch: int
-      the number of epochs to train for
-
-    Returns
-    -------
-    float
-      The average loss over the most recent checkpoint interval.
     """
-    for epoch in range(nb_epoch):
-      logger.info("Starting epoch %s" % str(epoch + 1))
-      losses = []
-      for (X_batch, y_batch, w_batch, ids_batch) in dataset.iterbatches():
-        losses.append(self.fit_on_batch(X_batch, y_batch, w_batch))
-      logger.info(
-          "Avg loss for epoch %d: %f" % (epoch + 1, np.array(losses).mean()))
-    return np.array(losses).mean()
+    raise NotImplementedError(
+        "Each model is responsible for its own fit method.")
 
   def predict(self, dataset: Dataset,
               transformers: List[Transformer] = []) -> np.ndarray:
