@@ -1,5 +1,5 @@
 """
-Scikit-learn wrapper interface of xgboost
+Scikit-learn wrapper interface
 """
 
 import os
