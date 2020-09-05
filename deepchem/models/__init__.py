@@ -26,12 +26,8 @@ from deepchem.models.chemnet_models import Smiles2Vec, ChemCeption
 
 # scikit-learn model
 from deepchem.models.sklearn_models import SklearnModel
-
-# XGBoost model
-try:
-  from deepchem.models.xgboost_models import XGBoostModel
-except ModuleNotFoundError:
-  pass
+# GDBT model
+from deepchem.models.gdbt_models import GDBTModel
 
 # PyTorch models
 try:
