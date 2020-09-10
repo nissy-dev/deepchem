@@ -1,7 +1,7 @@
 import unittest
-from flaky import flaky
 
 import numpy as np
+from flaky import flaky
 import tensorflow as tf
 from tensorflow.keras.layers import Input, Concatenate, Dense
 

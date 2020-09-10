@@ -2,10 +2,10 @@
 Tests to make sure deepchem models can overfit on tiny datasets.
 """
 import os
-from flaky import flaky
 
 import numpy as np
 import pytest
+from flaky import flaky
 import tensorflow as tf
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.ensemble import RandomForestRegressor

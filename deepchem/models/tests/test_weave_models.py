@@ -1,7 +1,6 @@
-from flaky import flaky
-
 import pytest
 import numpy as np
+from flaky import flaky
 
 import deepchem as dc
 from deepchem.data import NumpyDataset
