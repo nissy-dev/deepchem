@@ -1,6 +1,8 @@
-import deepchem as dc
-import numpy as np
 import unittest
+
+import numpy as np
+
+import deepchem as dc
 
 
 def generate_sequences(sequence_length, num_sequences):

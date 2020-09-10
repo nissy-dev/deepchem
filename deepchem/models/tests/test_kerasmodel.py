@@ -1,8 +1,9 @@
 import os
-import unittest
-import deepchem as dc
+
 import numpy as np
 import tensorflow as tf
+
+import deepchem as dc
 
 
 def test_overfit_graph_model():

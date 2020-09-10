@@ -1,9 +1,8 @@
-import os
 import unittest
-import deepchem as dc
+
 import numpy as np
-from deepchem.models.losses import L2Loss
-from deepchem.feat.mol_graphs import ConvMol
+
+import deepchem as dc
 
 try:
   import torch

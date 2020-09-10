@@ -1,6 +1,8 @@
-import deepchem.models.losses as losses
 import unittest
+
 import numpy as np
+
+import deepchem.models.losses as losses
 
 try:
   import tensorflow as tf

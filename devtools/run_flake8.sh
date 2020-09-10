@@ -8,6 +8,7 @@ items=(
     "deepchem/splits"
     "deepchem/feat"
     "deepchem/utils"
+    "deepchem/models"
 )
 
 for item in "${items[@]}" ; do

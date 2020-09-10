@@ -1,19 +1,22 @@
+import warnings
 import collections
+from typing import List, Union, Tuple, Iterable, Dict, Optional
 
-import deepchem as dc
 import numpy as np
 import tensorflow as tf
+from tensorflow.keras.layers import Input, Dense, Reshape, Softmax, Dropout, Activation, BatchNormalization
 
-from typing import List, Union, Tuple, Iterable, Dict, Optional
 from deepchem.utils.typing import OneOrMany, LossFn, KerasActivationFn
-from deepchem.data import Dataset, NumpyDataset, pad_features
-from deepchem.feat.graph_features import ConvMolFeaturizer
+from deepchem.data import Dataset, pad_features
 from deepchem.feat.mol_graphs import ConvMol
 from deepchem.metrics import to_one_hot
-from deepchem.models import KerasModel, layers
+from deepchem.models.keras_model import KerasModel
+from deepchem.models.layers import WeaveLayer, WeaveGather
+from deepchem.models.layers import DTNNEmbedding, DTNNStep, DTNNGather
+from deepchem.models.layers import DAGLayer, DAGGather
+from deepchem.models.layers import GraphConv, GraphPool, GraphGather
+from deepchem.models.layers import MessagePassing, SetGather
 from deepchem.models.losses import L2Loss, SoftmaxCrossEntropy, Loss
-from deepchem.trans import undo_transforms
-from tensorflow.keras.layers import Input, Dense, Reshape, Softmax, Dropout, Activation, BatchNormalization
 
 
 class TrimGraphOutput(tf.keras.layers.Layer):
@@ -228,7 +231,7 @@ class WeaveModel(KerasModel):
       else:
         n_atom_next = n_hidden
         n_pair_next = n_hidden
-      weave_layer_ind_A, weave_layer_ind_P = layers.WeaveLayer(
+      weave_layer_ind_A, weave_layer_ind_P = WeaveLayer(
           n_atom_input_feat=n_atom,
           n_pair_input_feat=n_pair,
           n_atom_output_feat=n_atom_next,
@@ -245,7 +248,7 @@ class WeaveModel(KerasModel):
         activation=final_conv_activation_fn)(weave_layer_ind_A)
     if batch_normalize:
       dense1 = BatchNormalization(**batch_normalize_kwargs)(dense1)
-    weave_gather = layers.WeaveGather(
+    weave_gather = WeaveGather(
         batch_size,
         n_input=self.n_graph_feat,
         gaussian_expand=gaussian_expand,
@@ -340,7 +343,6 @@ class WeaveModel(KerasModel):
       n_atoms = mol.get_num_atoms()
       # pair_edges is of shape (2, N)
       pair_edges = mol.get_pair_edges()
-      N_pairs = pair_edges[1]
       # number of atoms in each molecule
       atom_split.extend([im] * n_atoms)
       # index of pair features
@@ -468,24 +470,23 @@ class DTNNModel(KerasModel):
     distance_membership_i = Input(shape=tuple(), dtype=tf.int32)
     distance_membership_j = Input(shape=tuple(), dtype=tf.int32)
 
-    dtnn_embedding = layers.DTNNEmbedding(
-        n_embedding=self.n_embedding)(atom_number)
+    dtnn_embedding = DTNNEmbedding(n_embedding=self.n_embedding)(atom_number)
     if self.dropout > 0.0:
       dtnn_embedding = Dropout(rate=self.dropout)(dtnn_embedding)
-    dtnn_layer1 = layers.DTNNStep(
+    dtnn_layer1 = DTNNStep(
         n_embedding=self.n_embedding, n_distance=self.n_distance)([
             dtnn_embedding, distance, distance_membership_i,
             distance_membership_j
         ])
     if self.dropout > 0.0:
       dtnn_layer1 = Dropout(rate=self.dropout)(dtnn_layer1)
-    dtnn_layer2 = layers.DTNNStep(
+    dtnn_layer2 = DTNNStep(
         n_embedding=self.n_embedding, n_distance=self.n_distance)([
             dtnn_layer1, distance, distance_membership_i, distance_membership_j
         ])
     if self.dropout > 0.0:
       dtnn_layer2 = Dropout(rate=self.dropout)(dtnn_layer2)
-    dtnn_gather = layers.DTNNGather(
+    dtnn_gather = DTNNGather(
         n_embedding=self.n_embedding,
         layer_sizes=[self.n_hidden],
         n_outputs=self.n_tasks,
@@ -565,9 +566,12 @@ class DTNNModel(KerasModel):
 class DAGModel(KerasModel):
   """Directed Acyclic Graph models for molecular property prediction.
 
-    This model is based on the following paper:
+  This model is based on the following paper:
 
-    Lusci, Alessandro, Gianluca Pollastri, and Pierre Baldi. "Deep architectures and deep learning in chemoinformatics: the prediction of aqueous solubility for drug-like molecules." Journal of chemical information and modeling 53.7 (2013): 1563-1575.
+  Lusci, Alessandro, Gianluca Pollastri, and Pierre Baldi.
+  "Deep architectures and deep learning in chemoinformatics:
+  the prediction of aqueous solubility for drug-like molecules."
+  Journal of chemical information and modeling 53.7 (2013): 1563-1575.
 
    The basic idea for this paper is that a molecule is usually
    viewed as an undirected graph. However, you can convert it to
@@ -656,7 +660,7 @@ class DAGModel(KerasModel):
     calculation_masks = Input(shape=(self.max_atoms,), dtype=tf.bool)
     membership = Input(shape=tuple(), dtype=tf.int32)
     n_atoms = Input(shape=tuple(), dtype=tf.int32)
-    dag_layer1 = layers.DAGLayer(
+    dag_layer1 = DAGLayer(
         n_graph_feat=self.n_graph_feat,
         n_atom_feat=self.n_atom_feat,
         max_atoms=self.max_atoms,
@@ -666,7 +670,7 @@ class DAGModel(KerasModel):
             atom_features, parents, calculation_orders, calculation_masks,
             n_atoms
         ])
-    dag_gather = layers.DAGGather(
+    dag_gather = DAGGather(
         n_graph_feat=self.n_graph_feat,
         n_outputs=self.n_outputs,
         max_atoms=self.max_atoms,
@@ -703,7 +707,7 @@ class DAGModel(KerasModel):
             calculation_orders,
             calculation_masks,
             membership,
-            n_atoms  #, dropout_switch
+            n_atoms,  # dropout_switch
         ],
         outputs=outputs)
     super(DAGModel, self).__init__(
@@ -802,7 +806,7 @@ class _GraphConvKerasModel(tf.keras.Model):
             'Dropout must be included in every layer to predict uncertainty')
 
     self.graph_convs = [
-        layers.GraphConv(layer_size, activation_fn=tf.nn.relu)
+        GraphConv(layer_size, activation_fn=tf.nn.relu)
         for layer_size in graph_conv_layers
     ]
     self.batch_norms = [
@@ -812,9 +816,9 @@ class _GraphConvKerasModel(tf.keras.Model):
     self.dropouts = [
         Dropout(rate=rate) if rate > 0.0 else None for rate in dropout
     ]
-    self.graph_pools = [layers.GraphPool() for _ in graph_conv_layers]
+    self.graph_pools = [GraphPool() for _ in graph_conv_layers]
     self.dense = Dense(dense_layer_size, activation=tf.nn.relu)
-    self.graph_gather = layers.GraphGather(
+    self.graph_gather = GraphGather(
         batch_size=batch_size, activation_fn=tf.nn.tanh)
     self.trim = TrimGraphOutput()
     if self.mode == 'classification':
@@ -1067,13 +1071,13 @@ class MPNNModel(KerasModel):
     atom_to_pair = Input(shape=(2,), dtype=tf.int32)
     n_samples = Input(shape=tuple(), dtype=tf.int32)
 
-    message_passing = layers.MessagePassing(
+    message_passing = MessagePassing(
         self.T, message_fn='enn', update_fn='gru',
         n_hidden=self.n_hidden)([atom_features, pair_features, atom_to_pair])
 
     atom_embeddings = Dense(self.n_hidden)(message_passing)
 
-    mol_embeddings = layers.SetGather(
+    mol_embeddings = SetGather(
         self.M, batch_size,
         n_hidden=self.n_hidden)([atom_embeddings, atom_split])
 
@@ -1167,9 +1171,9 @@ class MPNNModel(KerasModel):
         yield (inputs, [y_b], [w_b])
 
 
-#################### Deprecation warnings for renamed TensorGraph models ####################
-
-import warnings
+#################################################################
+# Deprecation warnings for renamed TensorGraph models
+#################################################################
 
 TENSORGRAPH_DEPRECATION = "{} is deprecated and has been renamed to {} and will be removed in DeepChem 3.0."
 

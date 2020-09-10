@@ -1,12 +1,11 @@
-import numpy as np
-import tensorflow as tf
 import time
 import logging
 import os
-try:
-  from collections.abc import Sequence as SequenceCollection
-except:
-  from collections import Sequence as SequenceCollection
+from collections.abc import Sequence as SequenceCollection
+from typing import Any, Callable, Dict, Iterable, List, Optional, Sequence, Tuple, Union
+
+import numpy as np
+import tensorflow as tf
 
 from deepchem.data import Dataset, NumpyDataset
 from deepchem.metrics import Metric
@@ -15,8 +14,6 @@ from deepchem.models.models import Model
 from deepchem.models.optimizers import Adam, Optimizer, LearningRateSchedule
 from deepchem.trans import Transformer, undo_transforms
 from deepchem.utils.evaluate import GeneratorEvaluator
-
-from typing import Any, Callable, Dict, Iterable, List, Optional, Sequence, Tuple, Union
 from deepchem.utils.typing import LossFn, OneOrMany
 
 try:

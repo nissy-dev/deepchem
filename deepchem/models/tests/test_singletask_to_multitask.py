@@ -1,16 +1,12 @@
 """
 Testing singletask-to-multitask.
 """
-__author__ = "Bharath Ramsundar"
-__copyright__ = "Copyright 2016, Stanford University"
-__license__ = "MIT"
-
 import tempfile
 import shutil
 import unittest
 import numpy as np
+
 import deepchem as dc
-from sklearn.linear_model import LogisticRegression
 
 
 class TestSingletasktoMultitask(unittest.TestCase):
@@ -18,7 +14,7 @@ class TestSingletasktoMultitask(unittest.TestCase):
   Test top-level API for singletask_to_multitask ML models.
   """
 
-  #def test_singletask_to_multitask_classification(self):
+  # def test_singletask_to_multitask_classification(self):
   #  n_features = 10
   #  n_tasks = 17
   #  tasks = range(n_tasks)

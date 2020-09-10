@@ -1,17 +1,12 @@
-__author__ = "Joseph Gomes"
-__copyright__ = "Copyright 2017, Stanford University"
-__license__ = "MIT"
+import itertools
 
-import sys
+import numpy as np
+import tensorflow as tf
+from tensorflow.keras.layers import Input, Layer
 
 from deepchem.models import KerasModel
 from deepchem.models.layers import AtomicConvolution
 from deepchem.models.losses import L2Loss
-from tensorflow.keras.layers import Input, Layer
-
-import numpy as np
-import tensorflow as tf
-import itertools
 
 
 def initializeWeightsBiases(prev_layer_size,

@@ -1,10 +1,11 @@
-import deepchem as dc
-import tensorflow as tf
+import unittest
+
 import numpy as np
-from tensorflow.python.framework import test_util
+
+import deepchem as dc
 
 
-class TestCNN(test_util.TensorFlowTestCase):
+class TestCNN(unittest.TestCase):
 
   def test_1d_cnn_regression(self):
     """Test that a 1D CNN can overfit simple regression datasets."""

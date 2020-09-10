@@ -1,7 +1,8 @@
 import unittest
 
-import deepchem
 import numpy as np
+
+import deepchem
 
 
 class TestScScoreModel(unittest.TestCase):

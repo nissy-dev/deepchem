@@ -1,11 +1,12 @@
 """Generative Adversarial Networks."""
+import time
 
-from deepchem.models import KerasModel, layers, losses
-from tensorflow.keras.layers import Input, Lambda, Layer, Softmax, Reshape, Multiply
-from collections import Sequence
 import numpy as np
 import tensorflow as tf
-import time
+from tensorflow.keras.layers import Input, Lambda, Layer, Softmax, Reshape, Multiply
+
+from deepchem.models.keras_model import KerasModel
+from deepchem.models.layers import Variable, Stack
 
 
 class GAN(KerasModel):
@@ -137,11 +138,10 @@ class GAN(KerasModel):
     else:
       # Create learnable weights for the generators and discriminators.
 
-      gen_alpha = layers.Variable(np.ones((1, n_generators)), dtype=tf.float32)
+      gen_alpha = Variable(np.ones((1, n_generators)), dtype=tf.float32)
       # We pass an input to the Variable layer to work around a bug in TF 1.14.
       gen_weights = Softmax()(gen_alpha([self.noise_input]))
-      discrim_alpha = layers.Variable(
-          np.ones((1, n_discriminators)), dtype=tf.float32)
+      discrim_alpha = Variable(np.ones((1, n_discriminators)), dtype=tf.float32)
       discrim_weights = Softmax()(discrim_alpha([self.noise_input]))
 
       # Compute the weighted errors
@@ -150,8 +150,8 @@ class GAN(KerasModel):
           Reshape((n_discriminators, 1))(discrim_weights),
           Reshape((1, n_generators))(gen_weights)
       ]))
-      stacked_gen_loss = layers.Stack(axis=0)(gen_losses)
-      stacked_discrim_loss = layers.Stack(axis=0)(discrim_losses)
+      stacked_gen_loss = Stack(axis=0)(gen_losses)
+      stacked_discrim_loss = Stack(axis=0)(discrim_losses)
       total_gen_loss = Lambda(lambda x: tf.reduce_sum(x[0] * x[1]))(
           [stacked_gen_loss, weight_products])
       total_discrim_loss = Lambda(lambda x: tf.reduce_sum(x[0] * x[1]))(
@@ -162,8 +162,8 @@ class GAN(KerasModel):
 
       # Add an entropy term to the loss.
 
-      entropy = Lambda(lambda x: -(tf.reduce_sum(tf.math.log(x[0]))/n_generators +
-          tf.reduce_sum(tf.math.log(x[1]))/n_discriminators))([gen_weights, discrim_weights])
+      entropy = Lambda(lambda x: -(tf.reduce_sum(tf.math.log(x[0])) / n_generators + \
+        tf.reduce_sum(tf.math.log(x[1])) / n_discriminators))([gen_weights, discrim_weights])
       total_discrim_loss = Lambda(lambda x: x[0] + x[1])(
           [total_discrim_loss, entropy])
 
@@ -290,7 +290,7 @@ class GAN(KerasModel):
     -------
     A Tensor equal to the loss function to use for optimizing the discriminator.
     """
-    return Lambda(lambda x: -tf.reduce_mean(tf.math.log(x[0]+1e-10) + tf.math.log(1-x[1]+1e-10)))([discrim_output_train, discrim_output_gen])
+    return Lambda(lambda x: -tf.reduce_mean(tf.math.log(x[0] + 1e-10) + tf.math.log(1 - x[1] + 1e-10)))([discrim_output_train, discrim_output_gen])
 
   def fit_gan(self,
               batches,

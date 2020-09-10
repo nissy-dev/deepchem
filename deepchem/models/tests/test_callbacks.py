@@ -1,12 +1,10 @@
 import unittest
 import tempfile
-import deepchem as dc
+from io import StringIO
+
 import numpy as np
-import tensorflow as tf
-try:
-  from StringIO import StringIO
-except ImportError:
-  from io import StringIO
+
+import deepchem as dc
 
 
 class TestCallbacks(unittest.TestCase):

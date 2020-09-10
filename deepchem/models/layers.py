@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
-import tensorflow as tf
-import numpy as np
 import collections
 from typing import Callable, Dict, List
+
+import numpy as np
+import tensorflow as tf
 from tensorflow.keras import activations, initializers, backend
 from tensorflow.keras.layers import Dropout, BatchNormalization
 
@@ -24,7 +25,6 @@ class InteratomicL2Distances(tf.keras.layers.Layer):
   >>> result = np.array(layer([coords, neighbor_list]))
   >>> result.shape
   (5, 2)
-
   """
 
   def __init__(self, N_atoms: int, M_nbrs: int, ndim: int, **kwargs):
@@ -80,7 +80,7 @@ class InteratomicL2Distances(tf.keras.layers.Layer):
 
 class GraphConv(tf.keras.layers.Layer):
   """Graph Convolutional Layers
-  
+
   This layer implements the graph convolution introduced in [1]_.  The graph
   convolution combines per-node feature vectures in a nonlinear fashion with
   the feature vectors for neighboring nodes.  This "blends" information in
@@ -88,8 +88,9 @@ class GraphConv(tf.keras.layers.Layer):
 
   References
   ----------
-  .. [1] Duvenaud, David K., et al. "Convolutional networks on graphs for learning molecular fingerprints." Advances in neural information processing systems. 2015. https://arxiv.org/abs/1509.09292
-  
+  .. [1] Duvenaud, David K., et al. "Convolutional networks on graphs
+     for learning molecular fingerprints." Advances in neural information
+     processing systems. 2015. https://arxiv.org/abs/1509.09292
   """
 
   def __init__(self,
@@ -226,7 +227,7 @@ class GraphPool(tf.keras.layers.Layer):
   .. [1] Duvenaud, David K., et al. "Convolutional networks on graphs for
   learning molecular fingerprints." Advances in neural information processing
   systems. 2015. https://arxiv.org/abs/1509.09292
-  
+
   """
 
   def __init__(self, min_degree=0, max_degree=10, **kwargs):
@@ -472,8 +473,8 @@ class LSTMStep(tf.keras.layers.Layer):
 
 def cosine_dist(x, y):
   """Computes the inner product (cosine similarity) between two tensors.
-  
-  This assumes that the two input tensors contain rows of vectors where 
+
+  This assumes that the two input tensors contain rows of vectors where
   each column represents a different feature. The output tensor will have
   elements that represent the inner product between pairs of normalized vectors
   in the rows of `x` and `y`. The two tensors need to have the same number of
@@ -487,7 +488,7 @@ def cosine_dist(x, y):
   Methods
   -------
   The vectors in the input tensors are first l2-normalized such that each vector
-  has length or magnitude of 1. The inner product (dot product) is then taken 
+  has length or magnitude of 1. The inner product (dot product) is then taken
   between corresponding pairs of row vectors in the input tensors and returned.
 
   Examples
@@ -497,14 +498,14 @@ def cosine_dist(x, y):
   the same) will be a tensor of 1s. In this scenario, if the input tensors `x` and
   `y` are each of shape `(n,p)`, where each element in `x` and `y` is the same, then
   the output tensor would be a tensor of shape `(n,n)` with 1 in every entry.
-  
+
   >>> import tensorflow as tf
   >>> import deepchem.models.layers as layers
   >>> x = tf.ones((6, 4), dtype=tf.dtypes.float32, name=None)
   >>> y_same = tf.ones((6, 4), dtype=tf.dtypes.float32, name=None)
   >>> cos_sim_same = layers.cosine_dist(x,y_same)
 
-  `x` and `y_same` are the same tensor (equivalent at every element, in this 
+  `x` and `y_same` are the same tensor (equivalent at every element, in this
   case 1). As such, the pairwise inner product of the rows in `x` and `y` will
   always be 1. The output tensor will be of shape (6,6).
 
@@ -523,12 +524,12 @@ def cosine_dist(x, y):
   >>> x1 = identity_tensor[0:256,:]
   >>> x2 = identity_tensor[256:512,:]
   >>> cos_sim_orth = layers.cosine_dist(x1,x2)
-  
+
   Each row in `x1` is orthogonal to each row in `x2`. As such, the pairwise inner
   product of the rows in `x1`and `x2` will always be 0. Furthermore, because the
   shape of the input tensors are both of shape `(256,512)`, the output tensor will
   be of shape `(256,256)`.
-  
+
   >>> tf.reduce_sum(cos_sim_orth) == 0 # True
   <tf.Tensor: shape=(), dtype=bool, numpy=True>
   >>> cos_sim_orth.shape
@@ -548,7 +549,7 @@ def cosine_dist(x, y):
   Returns
   -------
   tf.Tensor
-    Returns a tensor of shape `(n, m)`, that is, `n` rows by `m` columns. 
+    Returns a tensor of shape `(n, m)`, that is, `n` rows by `m` columns.
     Each `i,j`-th entry of this output tensor is the inner product between
     the l2-normalized `i`-th row of the input tensor `x` and the
     the l2-normalized `j`-th row of the output tensor `y`.
@@ -575,10 +576,10 @@ class AttnLSTMEmbedding(tf.keras.layers.Layer):
 
   References
   ----------
-  .. [1] Vinyals, Oriol, et al. "Matching networks for one shot learning." 
-         Advances in neural information processing systems. 2016.
+  .. [1] Vinyals, Oriol, et al. "Matching networks for one shot learning."
+     Advances in neural information processing systems. 2016.
   .. [2] Vinyals, Oriol, Samy Bengio, and Manjunath Kudlur. "Order matters:
-         Sequence to sequence for sets." arXiv preprint arXiv:1511.06391 (2015).
+     Sequence to sequence for sets." arXiv preprint arXiv:1511.06391 (2015).
   """
 
   def __init__(self, n_test, n_support, n_feat, max_depth, **kwargs):
@@ -1022,7 +1023,6 @@ class VinaFreeEnergy(tf.keras.layers.Layer):
       The free energy of each complex in batch
     """
     X = inputs[0]
-    Z = inputs[1]
 
     # TODO(rbharath): This layer shouldn't be neighbor-listing. Make
     # neighbors lists an argument instead of a part of this layer.
@@ -1617,7 +1617,10 @@ class AlphaShareLayer(tf.keras.layers.Layer):
     out_tensors = []
     tmp_tensor = []
     for row in range(n_alphas):
-      tmp_tensor.append(tf.reshape(subspaces[row,], [-1, subspace_size]))
+      tmp_tensor.append(
+          tf.reshape(
+              subspaces[row,],  # noqa: E231
+              [-1, subspace_size]))
       count += 1
       if (count == 2):
         out_tensors.append(tf.concat(tmp_tensor, 1))
@@ -2065,7 +2068,7 @@ class GraphCNN(tf.keras.layers.Layer):
     A_shape = tf.shape(A)
     A_reshape = tf.reshape(A, [-1, A_shape[-1]])
     # So the Tensor has known dimensions
-    if B.get_shape()[1] == None:
+    if B.get_shape()[1] is None:
       axis_2 = -1
     else:
       axis_2 = B.get_shape()[1]
@@ -2475,7 +2478,7 @@ class WeaveGather(tf.keras.layers.Layer):
 
   >>> total_n_atoms = 4
 
-  Let's suppose that we have `n_atom_feat` features per atom. 
+  Let's suppose that we have `n_atom_feat` features per atom.
 
   >>> n_atom_feat = 75
 
@@ -2539,11 +2542,6 @@ class WeaveGather(tf.keras.layers.Layer):
       `compress_post_gaussian_expansion` is True. Should be recognizable by
       `tf.keras.activations`.
     """
-    try:
-      import tensorflow_probability as tfp
-    except ModuleNotFoundError:
-      raise ValueError(
-          "This class requires tensorflow-probability to be installed.")
     super(WeaveGather, self).__init__(**kwargs)
     self.n_input = n_input
     self.batch_size = batch_size
@@ -2581,9 +2579,8 @@ class WeaveGather(tf.keras.layers.Layer):
 
     Returns
     -------
-    output_molecules: List 
+    output_molecules: List
       Each entry in this list is of shape `(self.n_inputs,)`
-    
     """
     outputs = inputs[0]
     atom_split = inputs[1]
@@ -2623,13 +2620,18 @@ class WeaveGather(tf.keras.layers.Layer):
     deviation `gaussian_memberships[i][1]`. Each feature in `x` is assigned
     the probability of falling in each Gaussian, and probabilities are
     normalized across the 11 different Gaussians.
-    
+
     Returns
     -------
     outputs: tf.Tensor
       Of shape `(N, 11*n_feat)`
     """
-    import tensorflow_probability as tfp
+    try:
+      import tensorflow_probability as tfp
+    except ModuleNotFoundError:
+      raise ValueError(
+          "This class requires tensorflow-probability to be installed.")
+
     gaussian_memberships = [(-1.645, 0.283), (-1.080, 0.170), (-0.739, 0.134),
                             (-0.468, 0.118), (-0.228, 0.114), (0., 0.114),
                             (0.228, 0.114), (0.468, 0.118), (0.739, 0.134),
@@ -2859,7 +2861,10 @@ class DAGLayer(tf.keras.layers.Layer):
   in a molecule. This layer is based on the algorithm from the
   following paper:
 
-  Lusci, Alessandro, Gianluca Pollastri, and Pierre Baldi. "Deep architectures and deep learning in chemoinformatics: the prediction of aqueous solubility for drug-like molecules." Journal of chemical information and modeling 53.7 (2013): 1563-1575.
+  Lusci, Alessandro, Gianluca Pollastri, and Pierre Baldi.
+  "Deep architectures and deep learning in chemoinformatics:
+  the prediction of aqueous solubility for drug-like molecules."
+  Journal of chemical information and modeling 53.7 (2013): 1563-1575.
 
 
   This layer performs a sort of inward sweep. Recall that for

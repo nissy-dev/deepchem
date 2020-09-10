@@ -1,16 +1,15 @@
-import unittest
 import os
+from flaky import flaky
+
 import numpy as np
 import pytest
 import scipy
 
 import deepchem as dc
 from deepchem.data import NumpyDataset
-from deepchem.models import GraphConvModel, DAGModel, WeaveModel, MPNNModel
+from deepchem.models import GraphConvModel, DAGModel, MPNNModel
 from deepchem.molnet import load_bace_classification, load_delaney
 from deepchem.feat import ConvMolFeaturizer
-
-from flaky import flaky
 
 
 def get_dataset(mode='classification', featurizer='GraphConv', num_tasks=2):
@@ -138,7 +137,7 @@ def test_graph_conv_atom_features():
       mode='regression')
 
   model.fit(dataset, nb_epoch=1)
-  y_pred1 = model.predict(dataset)
+  _ = model.predict(dataset)
 
 
 @pytest.mark.slow
@@ -221,7 +220,7 @@ def test_dag_regression_uncertainty():
   # The DAG models have high error with dropout
   # Despite a lot of effort tweaking it , there appears to be
   # a limit to how low the error can go with dropout.
-  #assert mean_error < 0.5 * mean_value
+  # assert mean_error < 0.5 * mean_value
   assert mean_error < .7 * mean_value
   assert mean_std > 0.5 * mean_error
   assert mean_std < mean_value

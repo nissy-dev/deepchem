@@ -1,16 +1,14 @@
 """
 Tests to make sure deepchem models can overfit on tiny datasets.
 """
-
 import os
+from flaky import flaky
 
 import numpy as np
 import pytest
 import tensorflow as tf
-from flaky import flaky
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.ensemble import RandomForestRegressor
-from tensorflow.python.framework import test_util
 
 import deepchem as dc
 from deepchem.models.optimizers import Adam
@@ -136,7 +134,6 @@ def test_classification_overfit():
   n_samples = 10
   n_features = 3
   n_tasks = 1
-  n_classes = 2
 
   # Generate dummy dataset
   np.random.seed(123)
@@ -168,7 +165,6 @@ def test_residual_classification_overfit():
   n_samples = 10
   n_features = 5
   n_tasks = 1
-  n_classes = 2
 
   # Generate dummy dataset
   np.random.seed(123)
@@ -232,11 +228,10 @@ def test_fittransform_regression_overfit():
 
 def test_skewed_classification_overfit():
   """Test MultitaskClassifier can overfit 0/1 datasets with few actives."""
-  #n_samples = 100
+  # n_samples = 100
   n_samples = 100
   n_features = 3
   n_tasks = 1
-  n_classes = 2
 
   # Generate dummy dataset
   np.random.seed(123)
@@ -275,7 +270,6 @@ def test_skewed_missing_classification_overfit():
   n_samples = 5120
   n_features = 6
   n_tasks = 1
-  n_classes = 2
 
   # Generate dummy dataset
   np.random.seed(123)
@@ -349,7 +343,6 @@ def test_multitask_classification_overfit():
   n_tasks = 10
   n_samples = 10
   n_features = 3
-  n_classes = 2
 
   # Generate dummy dataset
   np.random.seed(123)
@@ -382,7 +375,6 @@ def test_tf_robust_multitask_classification_overfit():
   n_tasks = 10
   n_samples = 10
   n_features = 3
-  n_classes = 2
 
   # Generate dummy dataset
   np.random.seed(123)
@@ -417,7 +409,6 @@ def test_IRV_multitask_classification_overfit():
   n_tasks = 5
   n_samples = 10
   n_features = 128
-  n_classes = 2
 
   # Generate dummy dataset
   np.random.seed(123)
@@ -480,7 +471,6 @@ def test_multitask_regression_overfit():
   n_tasks = 10
   n_samples = 10
   n_features = 10
-  n_classes = 2
 
   # Generate dummy dataset
   np.random.seed(123)
@@ -509,7 +499,6 @@ def test_residual_regression_overfit():
   n_tasks = 10
   n_samples = 10
   n_features = 10
-  n_classes = 2
 
   # Generate dummy dataset
   np.random.seed(123)
@@ -545,7 +534,6 @@ def test_tf_robust_multitask_regression_overfit():
   n_tasks = 10
   n_samples = 10
   n_features = 3
-  n_classes = 2
 
   # Generate dummy dataset
   np.random.seed(123)

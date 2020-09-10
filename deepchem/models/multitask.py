@@ -2,11 +2,11 @@
 Convenience class that lets singletask models fit on multitask data.
 """
 import os
-import sklearn
-import tempfile
-import numpy as np
 import shutil
 import logging
+
+import numpy as np
+
 from deepchem.models import Model
 from deepchem.data import DiskDataset
 from deepchem.trans import undo_transforms
@@ -64,10 +64,9 @@ class SingletaskToMultitask(Model):
         DiskDataset.create_dataset([], task_dirs[task_num], [task])
         for (task_num, task) in enumerate(tasks)
     ]
-    #task_metadata_rows = {task: [] for task in tasks}
+    # task_metadata_rows = {task: [] for task in tasks}
     for shard_num, (X, y, w, ids) in enumerate(dataset.itershards()):
       logger.info("Processing shard %d" % shard_num)
-      basename = "dataset-%d" % shard_num
       for task_num, task in enumerate(tasks):
         logger.info("\tTask %s" % task)
         if len(w.shape) == 1:
@@ -112,8 +111,6 @@ class SingletaskToMultitask(Model):
     """
     Concatenates results from all singletask models.
     """
-    n_tasks = len(self.tasks)
-    n_samples = X.shape[0]
     y_preds = []
     for ind, task in enumerate(self.tasks):
       task_model = self.model_builder(self.task_model_dirs[task])
@@ -127,8 +124,6 @@ class SingletaskToMultitask(Model):
     """
     Prediction for multitask models.
     """
-    n_tasks = len(self.tasks)
-    n_samples = len(dataset)
     y_preds = []
     for ind, task in enumerate(self.tasks):
       task_model = self.model_builder(self.task_model_dirs[task])
@@ -140,13 +135,9 @@ class SingletaskToMultitask(Model):
     return y_pred
 
   def save(self):
-    """Save all models
-
-    TODO(rbharath): Saving is not yet supported for this model.
-    """
+    """TODO: Save all models"""
     pass
 
   def reload(self):
-    """Load all models"""
-    # Loading is done on-the-fly
+    """TODO: Load all models"""
     pass

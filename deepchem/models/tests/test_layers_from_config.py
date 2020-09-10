@@ -1,9 +1,4 @@
-import os
-import unittest
 import deepchem as dc
-import numpy as np
-import tensorflow as tf
-from tensorflow.python.eager import context
 
 
 def test_interatomic_l2_distance():

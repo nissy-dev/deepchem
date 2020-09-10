@@ -1,12 +1,16 @@
-import deepchem as dc
-import tensorflow as tf
+import collections
+
 import numpy as np
-from deepchem.models import KerasModel
+import tensorflow as tf
+from tensorflow.keras.layers import Input, Dense, Reshape, Softmax, Activation, Lambda
+from tensorflow.keras.layers import Conv1D, Conv2D, Conv3D
+from tensorflow.keras.layers import GlobalAveragePooling1D, GlobalAveragePooling2D, GlobalAveragePooling3D
+from tensorflow.keras.layers import GlobalMaxPool1D, GlobalMaxPool2D, GlobalMaxPool3D
+
+import deepchem as dc
+from deepchem.models.keras_model import KerasModel
 from deepchem.models.layers import SwitchedDropout
 from deepchem.metrics import to_one_hot
-from tensorflow.keras.layers import Input, Dense, Reshape, Softmax, Dropout, Activation, Lambda
-import tensorflow.keras.layers as layers
-import collections
 
 
 class CNN(KerasModel):
@@ -162,13 +166,12 @@ class CNN(KerasModel):
 
     # Add the convolutional layers
 
-    ConvLayer = (layers.Conv1D, layers.Conv2D, layers.Conv3D)[dims - 1]
+    ConvLayer = (Conv1D, Conv2D, Conv3D)[dims - 1]
     if pool_type == 'average':
-      PoolLayer = (layers.GlobalAveragePooling1D, layers.GlobalAveragePooling2D,
-                   layers.GlobalAveragePooling3D)[dims - 1]
+      PoolLayer = (GlobalAveragePooling1D, GlobalAveragePooling2D,
+                   GlobalAveragePooling3D)[dims - 1]
     elif pool_type == 'max':
-      PoolLayer = (layers.GlobalMaxPool1D, layers.GlobalMaxPool2D,
-                   layers.GlobalMaxPool2D)[dims - 1]
+      PoolLayer = (GlobalMaxPool1D, GlobalMaxPool2D, GlobalMaxPool3D)[dims - 1]
     else:
       raise ValueError('pool_type must be either "average" or "max"')
     for filters, size, stride, weight_stddev, bias_const, dropout, activation_fn in zip(

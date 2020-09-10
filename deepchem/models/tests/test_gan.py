@@ -1,9 +1,11 @@
-import deepchem as dc
+import unittest
+from flaky import flaky
+
 import numpy as np
 import tensorflow as tf
-import unittest
 from tensorflow.keras.layers import Input, Concatenate, Dense
-from flaky import flaky
+
+import deepchem as dc
 
 
 def generate_batch(batch_size):

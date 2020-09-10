@@ -1,16 +1,13 @@
 """
 Test reload for trained models.
 """
-__author__ = "Bharath Ramsundar"
-__copyright__ = "Copyright 2016, Stanford University"
-__license__ = "MIT"
-
 import unittest
 import tempfile
+
 import numpy as np
-import deepchem as dc
-import tensorflow as tf
 from sklearn.ensemble import RandomForestClassifier
+
+import deepchem as dc
 
 
 class TestReload(unittest.TestCase):

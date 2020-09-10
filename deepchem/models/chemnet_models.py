@@ -2,24 +2,16 @@
 Implementation of Smiles2Vec and ChemCeption models as part of the ChemNet
 transfer learning protocol.
 """
-
-__author__ = "Vignesh Ram Somnath"
-__license__ = "MIT"
-
 import numpy as np
 import tensorflow as tf
-import os
-import sys
-import logging
+from tensorflow.keras.layers import Input, Dense, Reshape, Softmax, Activation
+from tensorflow.keras.layers import Conv1D, GRU, LSTM, Bidirectional, GlobalAveragePooling2D
 
 from deepchem.data.datasets import pad_batch
-from deepchem.models import KerasModel, layers
-from deepchem.models.losses import L2Loss, SoftmaxCrossEntropy, SigmoidCrossEntropy
 from deepchem.metrics import to_one_hot
-from deepchem.models import chemnet_layers
-from tensorflow.keras.layers import Input, Dense, Reshape, Softmax, Activation
-from tensorflow.keras.layers import Dropout, Conv1D, Concatenate, Lambda, GRU, LSTM, Bidirectional
-from tensorflow.keras.layers import Conv2D, ReLU, Add, GlobalAveragePooling2D
+from deepchem.models.keras_model import KerasModel
+from deepchem.models.chemnet_layers import chemnet_layers
+from deepchem.models.losses import L2Loss, SoftmaxCrossEntropy, SigmoidCrossEntropy
 
 DEFAULT_INCEPTION_BLOCKS = {"A": 3, "B": 3, "C": 3}
 

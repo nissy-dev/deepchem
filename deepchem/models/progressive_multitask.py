@@ -1,11 +1,9 @@
-import time
-import numpy as np
-import tensorflow as tf
+import logging
 import collections
 
-import logging
-from deepchem.metrics import to_one_hot
-from deepchem.metrics import from_one_hot
+import numpy as np
+import tensorflow as tf
+
 from deepchem.models import KerasModel, layers
 from deepchem.models.losses import L2Loss, SparseSoftmaxCrossEntropy
 from deepchem.models.keras_model import _StandardLoss

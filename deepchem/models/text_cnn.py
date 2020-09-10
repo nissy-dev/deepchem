@@ -3,16 +3,17 @@ Created on Thu Sep 28 15:17:50 2017
 
 @author: zqwu
 """
-import numpy as np
-import tensorflow as tf
 import copy
 import sys
+import warnings
 
-from deepchem.metrics import to_one_hot, from_one_hot
+import numpy as np
+import tensorflow as tf
+from tensorflow.keras.layers import Input, Dense, Reshape, Softmax, Dropout, Conv1D, Concatenate, Lambda
+
+from deepchem.metrics import to_one_hot
 from deepchem.models import KerasModel, layers
 from deepchem.models.losses import L2Loss, SoftmaxCrossEntropy
-from deepchem.trans import undo_transforms
-from tensorflow.keras.layers import Input, Dense, Reshape, Softmax, Dropout, Conv1D, Concatenate, Lambda
 
 # Common symbols in SMILES, note that Cl and Br are regarded as single symbol
 default_dict = {
@@ -258,9 +259,9 @@ class TextCNNModel(KerasModel):
     return np.array(seq, dtype=np.int32)
 
 
-#################### Deprecation warnings for renamed TensorGraph models ####################
-
-import warnings
+#################################################################
+# Deprecation warnings for renamed TensorGraph models
+#################################################################
 
 TENSORGRAPH_DEPRECATION = "{} is deprecated and has been renamed to {} and will be removed in DeepChem 3.0."
 

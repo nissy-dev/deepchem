@@ -1,17 +1,8 @@
 """
 Tests for Normalizing Flows.
 """
-
-import os
-import sys
-import pytest
-
-import deepchem
-import numpy as np
 import tensorflow as tf
 import tensorflow_probability as tfp
-import unittest
-import numpy as np
 
 from deepchem.data import NumpyDataset
 from deepchem.models.normalizing_flows import NormalizingFlow, NormalizingFlowModel

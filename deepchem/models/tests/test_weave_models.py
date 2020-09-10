@@ -1,16 +1,12 @@
-import unittest
-import os
-import numpy as np
+from flaky import flaky
+
 import pytest
-import scipy
+import numpy as np
 
 import deepchem as dc
 from deepchem.data import NumpyDataset
-from deepchem.models import GraphConvModel, DAGModel, WeaveModel, MPNNModel
+from deepchem.models import WeaveModel
 from deepchem.molnet import load_bace_classification, load_delaney
-from deepchem.feat import ConvMolFeaturizer
-
-from flaky import flaky
 
 
 def get_dataset(mode='classification',

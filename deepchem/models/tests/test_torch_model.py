@@ -1,7 +1,9 @@
 import os
 import unittest
-import deepchem as dc
+
 import numpy as np
+
+import deepchem as dc
 
 try:
   import torch

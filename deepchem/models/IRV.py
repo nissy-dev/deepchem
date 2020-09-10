@@ -1,11 +1,11 @@
-import logging
+import warnings
+
 import numpy as np
 import tensorflow as tf
+from tensorflow.keras.layers import Input, Layer, Activation, Concatenate, Lambda
 
 from deepchem.models import KerasModel, layers
 from deepchem.models.losses import SigmoidCrossEntropy
-from deepchem.trans import undo_transforms
-from tensorflow.keras.layers import Input, Layer, Activation, Concatenate, Lambda
 
 
 class IRVLayer(Layer):
@@ -128,9 +128,7 @@ class MultitaskIRVClassifier(KerasModel):
 class TensorflowMultitaskIRVClassifier(MultitaskIRVClassifier):
 
   def __init__(self, *args, **kwargs):
-
     warnings.warn(
         "TensorflowMultitaskIRVClassifier is deprecated and has been renamed to MultitaskIRVClassifier",
         FutureWarning)
-
     super(TensorflowMultitaskIRVClassifier, self).__init__(*args, **kwargs)

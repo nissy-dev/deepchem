@@ -1,20 +1,17 @@
 """TensorFlow implementation of fully connected networks.
 """
 import logging
-import warnings
-import time
+import collections
+from typing import Any, Iterable, List, Optional, Sequence, Tuple, Union
+
 import numpy as np
 import tensorflow as tf
-import threading
-import collections
-
-import deepchem as dc
-from deepchem.models import KerasModel
-from deepchem.models.layers import SwitchedDropout
-from deepchem.metrics import to_one_hot
 from tensorflow.keras.layers import Input, Dense, Reshape, Softmax, Dropout, Activation, Lambda
 
-from typing import Any, Callable, Iterable, List, Optional, Sequence, Tuple, Union
+import deepchem as dc
+from deepchem.models.keras_model import KerasModel
+from deepchem.models.layers import SwitchedDropout
+from deepchem.metrics import to_one_hot
 from deepchem.utils.typing import KerasActivationFn, LossFn, OneOrMany
 
 logger = logging.getLogger(__name__)

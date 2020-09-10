@@ -1,13 +1,13 @@
 """
 Tests to make sure deepchem models can fit models on easy datasets.
 """
-
+import numpy as np
 import sklearn
 import sklearn.datasets
-import numpy as np
-import deepchem as dc
 from sklearn.linear_model import LinearRegression
 from sklearn.linear_model import LogisticRegression
+
+import deepchem as dc
 
 
 def test_sklearn_regression():

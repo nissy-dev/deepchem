@@ -1,16 +1,13 @@
 """
 Tests for Atomic Convolutions.
 """
-
 import os
+import unittest
 
 import pytest
+import numpy as np
 
 import deepchem
-import numpy as np
-import tensorflow as tf
-import unittest
-import numpy as np
 from deepchem.models import atomic_conv
 from deepchem.data import NumpyDataset
 from deepchem.feat.atomic_coordinates import ComplexNeighborListFragmentAtomicCoordinates
@@ -40,7 +37,7 @@ class TestAtomicConv(unittest.TestCase):
     frag1_z = np.random.randint(10, size=(N_atoms))
     frag2_coords = np.random.rand(N_atoms, 3)
     frag2_nbr_list = {0: [], 1: [], 2: [], 3: [], 4: []}
-    #frag2_z = np.random.rand(N_atoms, 3)
+    # frag2_z = np.random.rand(N_atoms, 3)
     frag2_z = np.random.randint(10, size=(N_atoms))
     system_coords = np.random.rand(2 * N_atoms, 3)
     system_nbr_list = {

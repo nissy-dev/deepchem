@@ -1,4 +1,5 @@
 import unittest
+
 from deepchem.models import TextCNNModel
 from deepchem.models.text_cnn import default_dict
 

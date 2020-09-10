@@ -81,7 +81,6 @@ def test_singletask_sklearn_rf_user_specified_regression_API():
 
 def test_singletask_sklearn_rf_RDKIT_descriptor_regression_API():
   """Test of singletask RF RDKIT-descriptor regression API."""
-  splittype = "scaffold"
   featurizer = dc.feat.RDKitDescriptors()
   tasks = ["log-solubility"]
 

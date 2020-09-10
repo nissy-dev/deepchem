@@ -1,5 +1,6 @@
-import deepchem.models.optimizers as optimizers
 import unittest
+
+import deepchem.models.optimizers as optimizers
 
 try:
   import tensorflow as tf
@@ -88,7 +89,7 @@ class TestOptimizers(unittest.TestCase):
         initial_rate=0.001, decay_rate=0.99, decay_steps=10000)
     opt = optimizers.Adam(learning_rate=rate)
     global_step = tf.Variable(0)
-    tfopt = opt._create_tf_optimizer(global_step)
+    _ = opt._create_tf_optimizer(global_step)
 
   @unittest.skipIf(not has_pytorch, 'PyTorch is not installed')
   def test_exponential_decay_pytorch(self):
@@ -98,7 +99,7 @@ class TestOptimizers(unittest.TestCase):
     opt = optimizers.Adam(learning_rate=rate)
     params = [torch.nn.Parameter(torch.Tensor([1.0]))]
     torchopt = opt._create_pytorch_optimizer(params)
-    schedule = rate._create_pytorch_schedule(torchopt)
+    _ = rate._create_pytorch_schedule(torchopt)
 
   @unittest.skipIf(not has_tensorflow, 'TensorFlow is not installed')
   def test_polynomial_decay_tf(self):
@@ -107,7 +108,7 @@ class TestOptimizers(unittest.TestCase):
         initial_rate=0.001, final_rate=0.0001, decay_steps=10000)
     opt = optimizers.Adam(learning_rate=rate)
     global_step = tf.Variable(0)
-    tfopt = opt._create_tf_optimizer(global_step)
+    _ = opt._create_tf_optimizer(global_step)
 
   @unittest.skipIf(not has_pytorch, 'PyTorch is not installed')
   def test_polynomial_decay_pytorch(self):
@@ -117,7 +118,7 @@ class TestOptimizers(unittest.TestCase):
     opt = optimizers.Adam(learning_rate=rate)
     params = [torch.nn.Parameter(torch.Tensor([1.0]))]
     torchopt = opt._create_pytorch_optimizer(params)
-    schedule = rate._create_pytorch_schedule(torchopt)
+    _ = rate._create_pytorch_schedule(torchopt)
 
   @unittest.skipIf(not has_tensorflow, 'TensorFlow is not installed')
   def test_linearCosine_decay_tf(self):
@@ -125,7 +126,7 @@ class TestOptimizers(unittest.TestCase):
     rate = optimizers.LinearCosineDecay(initial_rate=0.1, decay_steps=10000)
     opt = optimizers.Adam(learning_rate=rate)
     global_step = tf.Variable(0)
-    tfopt = opt._create_tf_optimizer(global_step)
+    _ = opt._create_tf_optimizer(global_step)
 
   @unittest.skipIf(not has_pytorch, 'PyTorch is not installed')
   def test_linearCosine_decay_pytorch(self):
@@ -134,4 +135,4 @@ class TestOptimizers(unittest.TestCase):
     opt = optimizers.Adam(learning_rate=rate)
     params = [torch.nn.Parameter(torch.Tensor([1.0]))]
     torchopt = opt._create_pytorch_optimizer(params)
-    schedule = rate._create_pytorch_schedule(torchopt)
+    _ = rate._create_pytorch_schedule(torchopt)
