@@ -10,7 +10,7 @@ import numpy as np
 import deepchem
 from deepchem.models import atomic_conv
 from deepchem.data import NumpyDataset
-from deepchem.feat.atomic_coordinates import ComplexNeighborListFragmentAtomicCoordinates
+from deepchem.feat import ComplexNeighborListFragmentAtomicCoordinates
 
 
 class TestAtomicConv(unittest.TestCase):

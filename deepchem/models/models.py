@@ -24,9 +24,7 @@ class Model(BaseEstimator):
   Abstract base class for DeepChem models.
   """
 
-  def __init__(self,
-               model_instance=None,
-               model_dir: Optional[str] = None,
+  def __init__(self, model=None, model_dir: Optional[str] = None,
                **kwargs) -> None:
     """Abstract class for all models.
 
@@ -35,7 +33,7 @@ class Model(BaseEstimator):
 
     Parameters
     ----------
-    model_instance: object
+    model: object
       Wrapper around ScikitLearn/Keras/Tensorflow model object.
     model_dir: str, optional (default None)
       Path to directory where model will be stored. If not specified,
@@ -45,6 +43,7 @@ class Model(BaseEstimator):
       raise ValueError(
           "This constructor is for an abstract class and should never be called directly."
           "Can only call from subclass constructors.")
+
     self.model_dir_is_temp = False
     if model_dir is not None:
       if not os.path.exists(model_dir):
@@ -53,8 +52,8 @@ class Model(BaseEstimator):
       model_dir = tempfile.mkdtemp()
       self.model_dir_is_temp = True
     self.model_dir = model_dir
-    self.model_instance = model_instance
-    self.model_class = model_instance.__class__
+    self.model = model
+    self.model_class = model.__class__
 
   def __del__(self):
     if 'model_dir_is_temp' in dir(self) and self.model_dir_is_temp:

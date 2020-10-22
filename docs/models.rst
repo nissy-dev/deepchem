@@ -12,7 +12,7 @@ Model Cheatsheet
 If you're just getting started with DeepChem, you're probably interested in the
 basics. The place to get started is this "model cheatsheet" that lists various
 types of custom DeepChem models. Note that some wrappers like :code:`SklearnModel`
-and :code:`GDBTModel` which wrap external machine learning libraries are excluded,
+and :code:`GBDTModel` which wrap external machine learning libraries are excluded,
 but this table is otherwise complete.
 
 As a note about how to read this table, each row describes what's needed to
@@ -146,6 +146,16 @@ SklearnModel
 .. autoclass:: deepchem.models.SklearnModel
   :members:
 
+Gradient Boosting Models
+========================
+
+Gradient Boosting Models (LightGBM and XGBoost) can be wrapped so they can interact with DeepChem.
+
+GBDTModel
+------------
+
+.. autoclass:: deepchem.models.GBDTModel
+  :members:
 
 Deep Learning Infrastructure
 ============================
@@ -186,6 +196,15 @@ Losses
   :members:
 
 .. autoclass:: deepchem.models.losses.SparseSoftmaxCrossEntropy
+  :members:
+
+.. autoclass:: deepchem.models.losses.VAE_ELBO
+  :members:
+
+.. autoclass:: deepchem.models.losses.VAE_KLDivergence
+  :members:
+
+.. autoclass:: deepchem.models.losses.ShannonEntropy
   :members:
 
 Optimizers
@@ -399,7 +418,7 @@ for any application requiring a probabilistic model with these capabilities, e.g
 .. autoclass:: deepchem.models.normalizing_flows.NormalizingFlowModel
   :members:
   
-=======
+
 PyTorch Models
 ==============
 

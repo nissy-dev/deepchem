@@ -91,7 +91,7 @@ class Featurizer(object):
     >>> dc.feat.CircularFingerprint(size=1024, radius=4)
     CircularFingerprint[radius=4, size=1024, chiral=False, bonds=True, features=False, sparse=False, smiles=False]
     >>> dc.feat.CGCNNFeaturizer()
-    CGCNNFeaturizer[radius=8.0, max_neighbors=8, step=0.2]
+    CGCNNFeaturizer[radius=8.0, max_neighbors=12, step=0.2]
     """
     args_spec = inspect.getfullargspec(self.__init__)  # type: ignore
     args_names = [arg for arg in args_spec.args if arg != 'self']
@@ -134,18 +134,19 @@ class Featurizer(object):
 
     override_args_info = ''
     for arg_name, default in zip(args_names, args_default_values):
-      arg_value = self.__dict__[arg_name]
-      # validation
-      # skip list
-      if isinstance(arg_value, list):
-        continue
-      if isinstance(arg_value, str):
-        # skip path string
-        if "\\/." in arg_value or "/" in arg_value or '.' in arg_value:
+      if arg_name in self.__dict__:
+        arg_value = self.__dict__[arg_name]
+        # validation
+        # skip list
+        if isinstance(arg_value, list):
           continue
-      # main logic
-      if default != arg_value:
-        override_args_info += '_' + arg_name + '_' + str(arg_value)
+        if isinstance(arg_value, str):
+          # skip path string
+          if "\\/." in arg_value or "/" in arg_value or '.' in arg_value:
+            continue
+        # main logic
+        if default != arg_value:
+          override_args_info += '_' + arg_name + '_' + str(arg_value)
     return self.__class__.__name__ + override_args_info
 
 
@@ -267,6 +268,7 @@ class MolecularFeaturizer(Featurizer):
     for i, mol in enumerate(molecules):
       if i % log_every_n == 0:
         logger.info("Featurizing datapoint %i" % i)
+
       try:
         if isinstance(mol, str):
           # mol must be a RDKit Mol object, so parse a SMILES
@@ -274,10 +276,15 @@ class MolecularFeaturizer(Featurizer):
           # SMILES is unique, so set a canonical order of atoms
           new_order = rdmolfiles.CanonicalRankAtoms(mol)
           mol = rdmolops.RenumberAtoms(mol, new_order)
+
         features.append(self._featurize(mol))
-      except:
+      except Exception as e:
+        if isinstance(mol, Chem.rdchem.Mol):
+          mol = Chem.MolToSmiles(mol)
         logger.warning(
-            "Failed to featurize datapoint %d. Appending empty array")
+            "Failed to featurize datapoint %d, %s. Appending empty array", i,
+            mol)
+        logger.warning("Exception message: {}".format(e))
         features.append(np.array([]))
 
     features = np.asarray(features)

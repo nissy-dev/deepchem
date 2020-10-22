@@ -166,9 +166,7 @@ class KerasModel(Model):
       like a printout every 10 batch steps, you'd set
       `log_frequency=10` for example.
     """
-    super(KerasModel, self).__init__(
-        model_instance=model, model_dir=model_dir, **kwargs)
-    self.model = model
+    super(KerasModel, self).__init__(model=model, model_dir=model_dir, **kwargs)
     if isinstance(loss, Loss):
       self._loss_fn: LossFn = _StandardLoss(model, loss)
     else:
@@ -558,9 +556,11 @@ class KerasModel(Model):
       returns the values of the uncertainty outputs.
     other_output_types: list, optional
       Provides a list of other output_types (strings) to predict from model.
-    Returns:
-      a NumPy array of the model produces a single output, or a list of arrays
-      if it produces multiple outputs
+
+    Returns
+    -------
+    a NumPy array of the model produces a single output, or a list of arrays
+    if it produces multiple outputs
     """
     results: Optional[List[np.ndarray]] = None
     variances: Optional[List[np.ndarray]] = None
@@ -783,7 +783,7 @@ class KerasModel(Model):
     if it produces multiple outputs
     """
     generator = self.default_generator(
-        dataset, mode='predict', pad_batches=False)
+        dataset, mode='predict', deterministic=True, pad_batches=False)
     return self.predict_on_generator(
         generator,
         transformers=transformers,

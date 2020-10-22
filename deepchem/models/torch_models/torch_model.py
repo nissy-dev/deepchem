@@ -157,9 +157,7 @@ class TorchModel(Model):
       the device on which to run computations.  If None, a device is
       chosen automatically.
     """
-    super(TorchModel, self).__init__(
-        model_instance=model, model_dir=model_dir, **kwargs)
-    self.model = model
+    super(TorchModel, self).__init__(model=model, model_dir=model_dir, **kwargs)
     if isinstance(loss, Loss):
       self._loss_fn: LossFn = _StandardLoss(model, loss)
     else:
@@ -1121,8 +1119,8 @@ class _StandardLoss(object):
   """The implements the loss function for models that use a dc.models.losses.Loss."""
 
   def __init__(self, model: torch.nn.Module, loss: Loss) -> None:
-    self.model = model
-    self.loss = loss
+    self.model = model  # not used
+    self.loss = loss  # not used
     self.criterion = loss._create_pytorch_loss()
 
   def __call__(self, outputs: List, labels: List, weights: List) -> float:
