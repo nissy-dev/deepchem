@@ -1,8 +1,8 @@
 import os
 
-import numpy as np
 import pytest
 import scipy
+import numpy as np
 from flaky import flaky
 
 import deepchem as dc
@@ -220,7 +220,6 @@ def test_dag_regression_uncertainty():
   # The DAG models have high error with dropout
   # Despite a lot of effort tweaking it , there appears to be
   # a limit to how low the error can go with dropout.
-  # assert mean_error < 0.5 * mean_value
   assert mean_error < .7 * mean_value
   assert mean_std > 0.5 * mean_error
   assert mean_std < mean_value

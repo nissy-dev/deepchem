@@ -1,13 +1,14 @@
 import logging
 import collections
+from typing import Tuple, Iterable, List
 
-import logging
+import tensorflow as tf
+
 import deepchem as dc
 from deepchem.metrics import to_one_hot
 from deepchem.models import KerasModel
 from deepchem.models.layers import Stack
 from deepchem.models.losses import SoftmaxCrossEntropy, L2Loss
-from typing import Tuple, Iterable, List
 
 logger = logging.getLogger(__name__)
 

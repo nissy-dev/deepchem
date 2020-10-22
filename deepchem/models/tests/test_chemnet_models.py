@@ -1,8 +1,8 @@
-import unittest
 import os
 import tempfile
 
 import pytest
+import numpy as np
 
 import deepchem as dc
 from deepchem.models import Smiles2Vec, ChemCeption

@@ -57,7 +57,7 @@ class TextCNNModel(KerasModel):
   """ A Convolutional neural network on smiles strings
 
   Reimplementation of the discriminator module in ORGAN [1]_ .
-  Originated from [2]_. 
+  Originated from [2]_.
 
   This model applies multiple 1D convolutional filters to
   the padded strings, then max-over-time pooling is applied on
@@ -83,7 +83,8 @@ class TextCNNModel(KerasModel):
 
   References
   ----------
-  .. [1]  Guimaraes, Gabriel Lima, et al. "Objective-reinforced generative adversarial networks (ORGAN) for sequence generation models." arXiv preprint arXiv:1705.10843 (2017).
+  .. [1]  Guimaraes, Gabriel Lima, et al. "Objective-reinforced generative adversarial networks (ORGAN)
+     for sequence generation models." arXiv preprint arXiv:1705.10843 (2017).
   .. [2] Kim, Yoon. "Convolutional neural networks for sentence classification." arXiv preprint arXiv:1408.5882 (2014).
 
   """

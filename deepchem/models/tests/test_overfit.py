@@ -3,10 +3,10 @@ Tests to make sure deepchem models can overfit on tiny datasets.
 """
 import os
 
-import numpy as np
 import pytest
-from flaky import flaky
+import numpy as np
 import tensorflow as tf
+from flaky import flaky
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.ensemble import RandomForestRegressor
 
@@ -228,7 +228,6 @@ def test_fittransform_regression_overfit():
 
 def test_skewed_classification_overfit():
   """Test MultitaskClassifier can overfit 0/1 datasets with few actives."""
-  # n_samples = 100
   n_samples = 100
   n_features = 3
   n_tasks = 1

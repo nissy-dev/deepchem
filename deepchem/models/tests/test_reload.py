@@ -2,18 +2,17 @@
 Test reload for trained models.
 """
 import os
-import pytest
-import unittest
 import tempfile
 
-import numpy as np
-import deepchem as dc
-import tensorflow as tf
 import scipy
+import numpy as np
+import tensorflow as tf
 from flaky import flaky
 from sklearn.ensemble import RandomForestClassifier
-from deepchem.molnet.load_function.chembl25_datasets import chembl25_tasks
+
+import deepchem as dc
 from deepchem.feat import create_char_to_idx
+from deepchem.molnet.load_function.chembl25_datasets import chembl25_tasks
 
 
 def test_sklearn_classifier_reload():
@@ -117,7 +116,6 @@ def test_multitaskclassification_reload():
   n_samples = 10
   n_features = 3
   n_tasks = 1
-  n_classes = 2
 
   # Generate dummy dataset
   np.random.seed(123)
@@ -171,7 +169,6 @@ def test_residual_classification_reload():
   n_samples = 10
   n_features = 5
   n_tasks = 1
-  n_classes = 2
 
   # Generate dummy dataset
   np.random.seed(123)
@@ -227,7 +224,6 @@ def test_robust_multitask_classification_reload():
   n_tasks = 10
   n_samples = 10
   n_features = 3
-  n_classes = 2
 
   # Generate dummy dataset
   np.random.seed(123)
@@ -348,7 +344,6 @@ def test_IRV_multitask_classification_reload():
   n_tasks = 5
   n_samples = 10
   n_features = 128
-  n_classes = 2
 
   # Generate dummy dataset
   np.random.seed(123)
@@ -533,7 +528,6 @@ def test_DAG_regression_reload():
 
   # Load mini log-solubility dataset.
   featurizer = dc.feat.ConvMolFeaturizer()
-  tasks = ["outcome"]
   mols = ["CC", "CCO", "CC", "CCC", "CCCCO", "CO", "CC", "CCCCC", "CCC", "CCCO"]
   n_samples = len(mols)
   X = featurizer(mols)
@@ -601,9 +595,7 @@ def test_weave_classification_reload():
 
   # Load mini log-solubility dataset.
   featurizer = dc.feat.WeaveFeaturizer()
-  tasks = ["outcome"]
   mols = ["CC", "CCCCC", "CCCCC", "CCC", "COOO", "COO", "OO"]
-  n_samples = len(mols)
   X = featurizer(mols)
   y = [1, 1, 1, 1, 0, 0, 0]
   dataset = dc.data.NumpyDataset(X, y)
@@ -652,7 +644,7 @@ def test_weave_classification_reload():
   reloadpred = reloaded_model.predict(predset)
   assert np.all(origpred == reloadpred)
 
-  #Eval model on train
+  # Eval model on train
   scores = reloaded_model.evaluate(dataset, [classification_metric])
   assert scores[classification_metric.name] > .6
 
@@ -665,7 +657,6 @@ def test_MPNN_regression_reload():
 
   # Load mini log-solubility dataset.
   featurizer = dc.feat.WeaveFeaturizer()
-  tasks = ["outcome"]
   mols = ["C", "CO", "CC"]
   n_samples = len(mols)
   X = featurizer(mols)
@@ -732,7 +723,6 @@ def test_textCNN_classification_reload():
   n_tasks = 1
 
   featurizer = dc.feat.RawFeaturizer()
-  tasks = ["outcome"]
   mols = ["C", "CO", "CC"]
   n_samples = len(mols)
   X = featurizer(mols)
@@ -853,9 +843,7 @@ def test_1d_cnn_regression_reload():
 def test_graphconvmodel_reload():
   featurizer = dc.feat.ConvMolFeaturizer()
   tasks = ["outcome"]
-  n_tasks = len(tasks)
   mols = ["C", "CO", "CC"]
-  n_samples = len(mols)
   X = featurizer(mols)
   y = np.array([0, 1, 0])
   dataset = dc.data.NumpyDataset(X, y)
@@ -914,8 +902,6 @@ def test_chemception_reload():
   y = np.random.randint(0, 2, size=(data_points, n_tasks))
   w = np.ones(shape=(data_points, n_tasks))
   dataset = dc.data.NumpyDataset(X, y, w, mols)
-  classsification_metric = dc.metrics.Metric(
-      dc.metrics.roc_auc_score, np.mean, mode="classification")
 
   model_dir = tempfile.mkdtemp()
   model = dc.models.ChemCeption(
@@ -942,7 +928,8 @@ def test_chemception_reload():
   assert np.all(origpred == reloadpred)
 
 
-# TODO: This test is a little awkward. The Smiles2Vec model awkwardly depends on a dataset_file being available on disk. This needs to be cleaned up to match the standard model handling API.
+# TODO: This test is a little awkward. The Smiles2Vec model awkwardly depends on a dataset_file being available on disk.
+# This needs to be cleaned up to match the standard model handling API.
 def test_smiles2vec_reload():
   """Test that smiles2vec models can be saved and reloaded."""
   dataset_file = os.path.join(os.path.dirname(__file__), "chembl_25_small.csv")
@@ -965,9 +952,6 @@ def test_smiles2vec_reload():
   w = np.ones(shape=(data_points, n_tasks))
   dataset = dc.data.NumpyDataset(dataset.X[:data_points, :max_seq_len], y, w,
                                  dataset.ids[:data_points])
-
-  classsification_metric = dc.metrics.Metric(
-      dc.metrics.roc_auc_score, np.mean, mode="classification")
 
   model_dir = tempfile.mkdtemp()
   model = dc.models.Smiles2Vec(
@@ -994,8 +978,6 @@ def test_smiles2vec_reload():
   reloadpred = reloaded_model.predict(dataset)
   assert np.all(origpred == reloadpred)
 
-import deepchem as dc
-
 
 # TODO: We need a cleaner usage example for this
 def test_DTNN_regression_reload():
@@ -1012,9 +994,6 @@ def test_DTNN_regression_reload():
   w = np.ones_like(y)
   dataset = dc.data.NumpyDataset(X, y, w, ids=None)
   n_tasks = y.shape[1]
-
-  regression_metric = dc.metrics.Metric(
-      dc.metrics.pearson_r2_score, task_averager=np.mean)
 
   model_dir = tempfile.mkdtemp()
   model = dc.models.DTNNModel(

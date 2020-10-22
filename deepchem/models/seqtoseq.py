@@ -1,10 +1,11 @@
 """Sequence to sequence translation models."""
-
-from deepchem.models import KerasModel, layers
 from heapq import heappush, heappushpop
+
 import numpy as np
 import tensorflow as tf
 from tensorflow.keras.layers import Input, Layer, Dense, Dropout, GRU, Lambda, Conv1D, Flatten, BatchNormalization
+
+from deepchem.models import KerasModel, layers
 
 
 class VariationalRandomizer(Layer):

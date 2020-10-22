@@ -1,7 +1,6 @@
 """Optimizers and related classes for use with TensorGraph."""
 
 import math
-
 from typing import Union
 
 

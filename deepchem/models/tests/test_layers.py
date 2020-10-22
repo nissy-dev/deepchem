@@ -1,6 +1,7 @@
-import deepchem as dc
 import numpy as np
 import tensorflow as tf
+
+import deepchem as dc
 import deepchem.models.layers as layers
 
 
@@ -203,14 +204,12 @@ def test_weave_gather_gaussian_histogram():
       np.array(np.concatenate(atom_feat, axis=0), dtype=np.float32),
       np.array(atom_split)
   ]
-  # per_mol_features = tf.math.segment_sum(inputs[0], inputs[1])
   outputs = gather.gaussian_histogram(inputs[0])
   # Gaussian histograms expands into 11 Gaussian buckets.
   assert np.array(outputs).shape == (
       4,
       11 * 75,
   )
-  # assert np.array(outputs[1]).shape == (11 * 75,)
 
 
 def test_graph_conv():
@@ -523,7 +522,6 @@ def test_DAG_layer():
   # molecules in the batch, just as it is for the graph conv.
   # This means that n_atoms is the batch-size
   n_atoms = batch_size
-  # dropout_switch = False
   layer = layers.DAGLayer(
       n_graph_feat=n_graph_feat,
       n_atom_feat=n_atom_feat,
@@ -535,7 +533,6 @@ def test_DAG_layer():
       calculation_orders,
       calculation_masks,
       n_atoms,
-      # dropout_switch
   ])
   # TODO(rbharath): What is the shape of outputs supposed to be?
   # I'm getting (7, 30) here. Where does 7 come from??

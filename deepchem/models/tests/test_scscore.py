@@ -2,7 +2,7 @@ import unittest
 
 import numpy as np
 
-import deepchem
+import deepchem as dc
 
 
 class TestScScoreModel(unittest.TestCase):
@@ -17,9 +17,9 @@ class TestScScoreModel(unittest.TestCase):
 
     X = np.random.rand(n_samples, 2, n_features)
     y = np.random.randint(2, size=(n_samples, n_tasks))
-    dataset = deepchem.data.NumpyDataset(X, y)
+    dataset = dc.data.NumpyDataset(X, y)
 
-    model = deepchem.models.ScScoreModel(n_features, dropouts=0)
+    model = dc.models.ScScoreModel(n_features, dropouts=0)
 
     model.fit(dataset, nb_epoch=100)
     pred = model.predict(dataset)

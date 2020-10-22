@@ -2,9 +2,11 @@
 Integration tests for singletask vector feature models.
 """
 import os
-import deepchem as dc
+
 import numpy as np
 from sklearn.ensemble import RandomForestRegressor
+
+import deepchem as dc
 
 
 def test_singletask_sklearn_rf_ECFP_regression_API():
