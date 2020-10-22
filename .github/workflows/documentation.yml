@@ -1,0 +1,34 @@
+name: documentation
+on:
+  push: # ci work when pushing master branch
+    branches:
+      - master
+  pull_request: # ci work when creating a PR to master branch
+    branches:
+      - master
+jobs:
+  core:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: ubuntu-latest
+        python-version: [3.6, 3.7]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup conda
+      uses: conda-incubator/setup-miniconda@v1
+      with:
+        auto-update-conda: true
+    - name: Install dependencies (core)
+      run: |
+        ./scripts/install_deepchem_conda.sh ${{ matrix.python-version }} cpu
+        pip install -e .
+    - name: Install dependencies (documentation)
+      working-directory: ./docs
+      run: pip install -r requirements.txt
+    - name: Build check
+      working-directory: ./docs
+      run: make clean html
+    - name: Example Test check
+      working-directory: ./docs
+      run: make doctest_examples

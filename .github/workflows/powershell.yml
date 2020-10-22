@@ -1,0 +1,26 @@
+name: powershell
+on:
+  push: # ci work when pushing master branch
+    branches:
+      - master
+  pull_request: # ci work when creating a PR to master branch
+    branches:
+      - master
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: windows-latest
+        python-version: [3.6, 3.7]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup conda
+      uses: conda-incubator/setup-miniconda@v1
+      with:
+        auto-update-conda: true
+    - name: Install dependencies 
+      shell: powershell
+      run:
+        ./scripts/install_deepchem_conda.ps1 ${{ matrix.python-version }} cpu
+        pip install -e .

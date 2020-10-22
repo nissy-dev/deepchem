@@ -1,0 +1,35 @@
+name: core
+on:
+  push: # ci work when pushing master branch
+    branches:
+      - master
+  pull_request: # ci work when creating a PR to master branch
+    branches:
+      - master
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python-version: [3.6, 3.7]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup conda
+      uses: conda-incubator/setup-miniconda@v1
+      with:
+        auto-update-conda: true
+    - name: Install dependencies
+      run:
+        ./scripts/install_deepchem_conda.sh ${{ matrix.python-version }} cpu
+        pip install -e .
+    - name: Yapf check
+      run: ./devtools/run_yapf.sh
+    - name: Flake8 check
+      run: ./devtools/run_flake8.sh
+    - name: Mypy check
+      run: mypy -p deepchem
+    - name: Test (not slow)
+      run: pytest -v -m "not slow" --cov=deepchem deepchem
+    - name: DocTest
+      run: pytest -v --ignore-glob='deepchem/**/test*.py' --doctest-modules deepchem
