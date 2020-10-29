@@ -130,10 +130,7 @@ def linkcode_resolve(domain, info):
 def setup(app):
 
   def skip(app, what, name, obj, skip, options):
-    members = [
-        '__init__',
-        '__call__',
-    ]
+    members = ['__init__']
     return False if name in members else skip
 
   app.connect('autodoc-skip-member', skip)
