@@ -11,7 +11,6 @@ from transformers import BertTokenizer
 from logging import getLogger
 
 logger = getLogger(__name__)
-
 """
 SMI_REGEX_PATTERN: str
     SMILES regex pattern for tokenization. Designed by Schwaller et. al.
@@ -269,7 +268,7 @@ class SmilesTokenizer(BertTokenizer):
 
 class BasicSmilesTokenizer(object):
   """
-  Run basic SMILES tokenization using a regex pattern developed by Schwaller et. al. 
+  Run basic SMILES tokenization using a regex pattern developed by Schwaller et. al.
   This tokenizer is to be used when a tokenizer that does not require the transformers library by HuggingFace is required.
 
   Examples
