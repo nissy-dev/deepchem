@@ -119,11 +119,11 @@ To listen in, please email X.Y@gmail.com, where X=bharath and Y=ramsundar to int
    :caption: API Reference
 
    api_reference/data
+   api_reference/moleculenet
    api_reference/featurizers
    api_reference/splitters
    api_reference/transformers
    api_reference/models
-   api_reference/layers
    api_reference/metrics
    api_reference/hyper
    api_reference/metalearning
