@@ -74,12 +74,6 @@ jobs:
     - name: Install DeepChem
       shell: bash -l {0}
       run: pip install -e .
-    - name: yapf
-      shell: bash -l {0}
-      run: source scripts/yapf_for_ci.bash
-    - name: flake8
-      shell: bash -l {0}
-      run: source scripts/flake8_for_ci.bash
     - name: mypy
       shell: bash -l {0}
       run: mypy -p deepchem
