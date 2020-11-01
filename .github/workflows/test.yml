@@ -8,16 +8,17 @@ on:
       - master
 jobs:
   test:
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        python-version: [3.6, 3.7, 3.8]
-        exclude:
-          - os: macos-latest
-            python-version: [3.7, 3.8]
-          - os: windows-latest
-            python-version: [3.7, 3.8]
+        python-version: [3.7]
+        include:
+          - os: ubuntu-latest
+            python-version: 3.6
+          - os: ubuntu-latest
+            python-version: 3.8
     steps:
     - uses: actions/checkout@v2
     - name: Store pip modules cache for Linux
@@ -52,13 +53,14 @@ jobs:
       if: startsWith(runner.os, 'macOS')
       run: brew update && brew install libomp
     - name: Create env.yml
+      shell: bash
       run: |
         python -m pip install --upgrade pip;
         pip install conda-merge;
         if [ "$(uname)" == 'Darwin' ]; then
-          conda-merge env.common.yml env.cpu.yml env.test.yml > env.yml
-        else
           conda-merge env.common.yml env.cpu.mac.yml env.test.yml > env.yml
+        else
+          conda-merge env.common.yml env.cpu.yml env.test.yml > env.yml
         fi;
     - name: Install all dependencies
       uses: conda-incubator/setup-miniconda@v1
@@ -74,10 +76,10 @@ jobs:
       run: pip install -e .
     - name: yapf
       shell: bash -l {0}
-      run: source scripts/run_yapf.sh
+      run: source scripts/yapf_for_ci.bash
     - name: flake8
       shell: bash -l {0}
-      run: source scripts/run_flake8.sh
+      run: source scripts/flake8_for_ci.bash
     - name: mypy
       shell: bash -l {0}
       run: mypy -p deepchem

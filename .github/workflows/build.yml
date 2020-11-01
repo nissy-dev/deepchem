@@ -35,6 +35,7 @@ jobs:
       run: python -c "import deepchem"
 
   bash-build:
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
