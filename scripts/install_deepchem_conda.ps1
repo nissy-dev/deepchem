@@ -1,31 +1,39 @@
-#!/usr/bin/env pwsh
+# This script creates the new deepchem enviroment
 
 $CMDNAME = $myInvocation.MyCommand.name
-if ($Args.Count -eq 2)
+if ($args.Count -ne 2)
 {
     echo "Please set two arguments."
-    echo "Usage) $CMDNAME python_version cpu_or_gpu" 1>&2
-    echo "Example) $CMDNAME 3.6 gpu" 1>&2
-    exit 1
+    echo "Usage) $CMDNAME python_version cpu_or_gpu"
+    echo "Example) $CMDNAME 3.6 gpu"
+    return 1
 }
+
+# This command is nearly equal to `conda init` command
+# Need to use `conda activate` command
+(& "conda" "shell.powershell" "hook") | Out-String | Invoke-Expression
 
 # create deepchem environment
 conda config --set always_yes yes
 conda create --name deepchem python=$args[0]
 conda install -c conda-forge conda-merge
 
-if($args[0] -eq "gpu")
+$common = Join-Path (pwd).PATH "env.common.yml"
+$test = Join-Path (pwd).PATH "env.test.yml"
+$out = Join-Path (pwd).PATH "env.yml"
+if($args[1] -eq "gpu")
 {
     # We expect the CUDA vesion is 10.1.
-    conda-merge $PWD/env.common.yml $PWD/env.gpu.yml > $PWD/env.yml
+    $gpu = Join-Path (pwd).PATH "env.gpu.yml"
+    conda-merge $common $gpu $test > $out
     echo "Installing DeepChem in the GPU environment"
 }
 else
 {
-    conda-merge $PWD/env.common.yml $PWD/env.cpu.yml > $PWD/env.yml
+    $cpu = Join-Path (pwd).PATH "env.cpu.yml"
+    conda-merge $common $cpu $test > $out
     echo "Installing DeepChem in the CPU environment"
 }
 
-# install all dependencies
-conda env update --file $PWD/env.yml
-conda activate deepchem
+# Install all dependencies
+conda env update --file $out
