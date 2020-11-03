@@ -142,8 +142,8 @@ class VinaPoseGenerator(PoseGenerator):
       logger.info("Downloaded Vina. Extracting")
       if platform.system() == 'Windows':
         print("msi may be bug")
-        # msi_cmd = "msiexec /i %s" % downloaded_file
-        # check_output(msi_cmd.split())
+        msi_cmd = "msiexec /i %s" % downloaded_file
+        check_output(msi_cmd.split())
       else:
         with tarfile.open(downloaded_file) as tar:
           tar.extractall(data_dir)
