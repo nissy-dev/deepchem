@@ -15,7 +15,7 @@ jobs:
         python-version: [3.7]
     steps:
     - uses: actions/checkout@v2
-    - name: Store pip modules cache for Linux
+    - name: Cache pip modules for Linux
       uses: actions/cache@v2
       with:
         path: ~/.cache/pip
@@ -43,7 +43,7 @@ jobs:
         python-version: [3.7]
     steps:
     - uses: actions/checkout@v2
-    - name: Store pip modules cache for Linux
+    - name: Cache pip modules for Linux
       if: startsWith(runner.os, 'Linux')
       uses: actions/cache@v2
       with:
@@ -93,7 +93,7 @@ jobs:
         python-version: [3.7]
     steps:
     - uses: actions/checkout@v2
-    - name: Cache pypi for Windows
+    - name: Cache pip modules for Windows
       uses: actions/cache@v2
       with:
         path: ~\AppData\Local\pip\Cache

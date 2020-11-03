@@ -21,7 +21,7 @@ jobs:
             python-version: 3.8
     steps:
     - uses: actions/checkout@v2
-    - name: Store pip modules cache for Linux
+    - name: Cache pip modules for Linux
       if: startsWith(runner.os, 'Linux')
       uses: actions/cache@v2
       with:
@@ -77,9 +77,9 @@ jobs:
     - name: mypy
       shell: bash -l {0}
       run: mypy -p deepchem
-    - name: pytest
-      shell: bash -l {0}
-      run: pytest -v -m "not slow" --cov=deepchem deepchem
     - name: doctest
       shell: bash -l {0}
       run: pytest -v --ignore-glob='deepchem/**/test*.py' --doctest-modules deepchem
+    - name: pytest
+      shell: bash -l {0}
+      run: pytest -v -m "not slow" --cov=deepchem deepchem

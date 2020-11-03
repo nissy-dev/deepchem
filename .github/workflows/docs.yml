@@ -15,7 +15,7 @@ jobs:
         python-version: [3.7]
     steps:
     - uses: actions/checkout@v2
-    - name: Store pip modules cache for Linux
+    - name: Cache pip modules for Linux
       uses: actions/cache@v2
       with:
         path: ~/.cache/pip
@@ -50,4 +50,5 @@ jobs:
     - name: DocTest
       shell: bash -l {0}
       working-directory: ./docs
-      run: make doctest_examples
+      run: |
+        make doctest_examples
