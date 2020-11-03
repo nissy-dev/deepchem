@@ -17,12 +17,12 @@ class TestPoseGeneration(unittest.TestCase):
 
   def test_vina_initialization(self):
     """Test that VinaPoseGenerator can be initialized."""
-    # dc.dock.VinaPoseGenerator()
+    dc.dock.VinaPoseGenerator()
 
   def test_pocket_vina_initialization(self):
     """Test that VinaPoseGenerator can be initialized."""
     pocket_finder = dc.dock.ConvexHullPocketFinder()
-    # dc.dock.VinaPoseGenerator(pocket_finder=pocket_finder)
+    dc.dock.VinaPoseGenerator(pocket_finder=pocket_finder)
 
   @pytest.mark.slow
   def test_vina_poses_and_scores(self):
