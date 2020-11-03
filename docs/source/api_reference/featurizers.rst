@@ -101,12 +101,24 @@ This function computes atom-atom features (for atom pairs which may not have bon
 .. autofunction:: deepchem.feat.graph_features.pair_features
 
 
+MACCSKeysFingerprint
+^^^^^^^^^^^^^^^^^^^^
+
+.. autoclass:: deepchem.feat.MACCSKeysFingerprint
+  :members:
+
 CircularFingerprint
 ^^^^^^^^^^^^^^^^^^^
 
 .. autoclass:: deepchem.feat.CircularFingerprint
   :members:
   :inherited-members:
+
+PubChemFingerprint
+^^^^^^^^^^^^^^^^^^
+
+.. autoclass:: deepchem.feat.PubChemFingerprint
+  :members:
 
 Mol2VecFingerprint
 ^^^^^^^^^^^^^^^^^^

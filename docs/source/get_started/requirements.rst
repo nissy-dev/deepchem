@@ -34,6 +34,10 @@ DeepChem has a number of "soft" requirements.
 |                                |               | :code:`dc.models.torch_models`                    |
 |                                |               |                                                   |
 +--------------------------------+---------------+---------------------------------------------------+
+| `DGL-LifeSci`_                 | latest        | :code:`dc.models.torch_models`                    |
+|                                |               |                                                   |
+|                                |               |                                                   |
++--------------------------------+---------------+---------------------------------------------------+
 | `HuggingFace Transformers`_    | Not Testing   | :code:`dc.feat.smiles_tokenizer`                  |
 |                                |               |                                                   |
 |                                |               |                                                   |
@@ -76,6 +80,10 @@ DeepChem has a number of "soft" requirements.
 +--------------------------------+---------------+---------------------------------------------------+
 | `Pillow`_                      | latest        | :code:`dc.data.data_loader`,                      |
 |                                |               | :code:`dc.trans.transformers`                     |
+|                                |               |                                                   |
++--------------------------------+---------------+---------------------------------------------------+
+| `PubChemPy`_                   | latest        | :code:`dc.feat.molecule_featurizers`              |
+|                                |               |                                                   |
 |                                |               |                                                   |
 +--------------------------------+---------------+---------------------------------------------------+
 | `pyGPGO`_                      | latest        | :code:`dc.hyper.gaussian_process`                 |
@@ -123,6 +131,7 @@ DeepChem has a number of "soft" requirements.
 .. _`TensorFlow`: https://www.tensorflow.org/
 .. _`BioPython`: https://biopython.org/wiki/Documentation
 .. _`Deep Graph Library`: https://www.dgl.ai/
+.. _`DGL-LifeSci`: https://github.com/awslabs/dgl-lifesci
 .. _`HuggingFace Transformers`: https://huggingface.co/transformers/
 .. _`LightGBM`: https://lightgbm.readthedocs.io/en/latest/index.html
 .. _`matminer`: https://hackingmaterials.lbl.gov/matminer/
@@ -134,6 +143,7 @@ DeepChem has a number of "soft" requirements.
 .. _`OpenMM`: http://openmm.org/
 .. _`PDBFixer`: https://github.com/pandegroup/pdbfixer
 .. _`Pillow`: https://pypi.org/project/Pillow/
+.. _`PubChemPy`: https://pubchempy.readthedocs.io/en/latest/
 .. _`pyGPGO`: https://pygpgo.readthedocs.io/en/latest/
 .. _`Pymatgen`: https://pymatgen.org/
 .. _`PyTorch`: https://pytorch.org/
