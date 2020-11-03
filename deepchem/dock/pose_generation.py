@@ -141,6 +141,7 @@ class VinaPoseGenerator(PoseGenerator):
       downloaded_file = os.path.join(data_dir, filename)
       logger.info("Downloaded Vina. Extracting")
       if platform.system() == 'Windows':
+        print("msi may be bug")
         # msi_cmd = "msiexec /i %s" % downloaded_file
         # check_output(msi_cmd.split())
       else:
