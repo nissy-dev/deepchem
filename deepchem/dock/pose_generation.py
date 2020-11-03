@@ -144,10 +144,10 @@ class VinaPoseGenerator(PoseGenerator):
         print("msi may be bug")
         msi_cmd = "msiexec /i %s" % downloaded_file
         # check_output(msi_cmd.split())
-        import os
-        os.system(msi_cmd) 
-        # import subprocess
-        # subprocess.call(msi_cmd, shell=True)
+        # import os
+        # os.system(msi_cmd) 
+        import subprocess
+        subprocess.call(msi_cmd, shell=True)
       else:
         with tarfile.open(downloaded_file) as tar:
           tar.extractall(data_dir)
