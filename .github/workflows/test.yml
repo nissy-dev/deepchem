@@ -48,8 +48,9 @@ jobs:
       if: startsWith(runner.os, 'macOS')
       run: brew update && brew install libomp
     - name: check msi
+      shell: bash -l {0}
       run: |
-        curl.exe -o autodock_vina_1_1_2_win32.msi http://vina.scripps.edu/download/autodock_vina_1_1_2_win32.msi
+        curl -o autodock_vina_1_1_2_win32.msi http://vina.scripps.edu/download/autodock_vina_1_1_2_win32.msi
         msiexec /i autodock_vina_1_1_2_win32.msi
     - name: Create env.yml
       shell: bash
