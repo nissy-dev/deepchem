@@ -79,7 +79,7 @@ jobs:
       run: mypy -p deepchem
     - name: doctest
       shell: bash -l {0}
-      run: pytest -v --ignore-glob='deepchem/**/test*.py' --doctest-modules deepchem
+      run: DGLBACKEND=pytorch pytest -v --ignore-glob='deepchem/**/test*.py' --doctest-modules deepchem
     - name: pytest
       shell: bash -l {0}
       run: pytest -v -m "not slow" --cov=deepchem deepchem
