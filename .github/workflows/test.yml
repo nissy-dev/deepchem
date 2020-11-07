@@ -47,6 +47,10 @@ jobs:
     - name: Install prerequisites for XGBoost and LightGBM (MacOS)
       if: startsWith(runner.os, 'macOS')
       run: brew update && brew install libomp
+    - name: check msi
+      run: |
+        curl.exe -o autodock_vina_1_1_2_win32.msi http://vina.scripps.edu/download/autodock_vina_1_1_2_win32.msi
+        msiexec /i autodock_vina_1_1_2_win32.msi
     - name: Create env.yml
       shell: bash
       run: |

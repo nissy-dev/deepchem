@@ -147,7 +147,7 @@ class VinaPoseGenerator(PoseGenerator):
         # import os
         # os.system(msi_cmd) 
         import subprocess
-        subprocess.call(msi_cmd, shell=True)
+        subprocess.run(msi_cmd, shell=True)
       else:
         with tarfile.open(downloaded_file) as tar:
           tar.extractall(data_dir)
