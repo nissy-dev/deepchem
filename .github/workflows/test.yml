@@ -52,9 +52,9 @@ jobs:
       run: icacls "C:\Windows\Temp" /q /c /t /grant Users:F /T
     - name: check msi
       run: |
-        curl.exe -o autodock_vina_1_1_2_win32.msi http://vina.scripps.edu/download/autodock_vina_1_1_2_win32.msi && \
-        msiexec.exe /i autodock_vina_1_1_2_win32.msi /l*v log.txt /qn && \
-        cat log.txt
+        curl.exe -o autodock_vina_1_1_2_win32.msi http://vina.scripps.edu/download/autodock_vina_1_1_2_win32.msi;
+        msiexec.exe /i autodock_vina_1_1_2_win32.msi /l*v log.txt /qn;
+        cat log.txt;
     - name: Create env.yml
       shell: bash
       run: |
