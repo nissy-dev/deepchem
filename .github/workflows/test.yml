@@ -47,6 +47,9 @@ jobs:
     - name: Install prerequisites for XGBoost and LightGBM (MacOS)
       if: startsWith(runner.os, 'macOS')
       run: brew update && brew install libomp
+    - name: Grant Full Access to c:\windows\temp directory
+      if: startsWith(runner.os, 'Windows')
+      run: icacls "C:\Windows\Temp" /q /c /t /grant Users:F /T
     - name: check msi
       shell: bash -l {0}
       run: |
