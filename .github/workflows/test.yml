@@ -56,7 +56,7 @@ jobs:
         curl.exe -o autodock_vina_1_1_2_win32.msi http://vina.scripps.edu/download/autodock_vina_1_1_2_win32.msi;
         msiexec.exe /i autodock_vina_1_1_2_win32.msi /l*v log.txt /qn;
         type log.txt;
-        ls ""\Program Files\";
+        ls "\Program Files\";
         "\Program Files\The Scripps Research Institute\Vina\vina.exe" --help;
     - name: Create env.yml
       shell: bash
