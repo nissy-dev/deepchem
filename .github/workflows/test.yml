@@ -51,6 +51,7 @@ jobs:
       if: startsWith(runner.os, 'Windows')
       run: icacls "C:\Windows\Temp" /q /c /t /grant Users:F /T
     - name: check msi
+      shell: cmd
       run: |
         curl.exe -o autodock_vina_1_1_2_win32.msi http://vina.scripps.edu/download/autodock_vina_1_1_2_win32.msi;
         msiexec.exe /i autodock_vina_1_1_2_win32.msi /l*v log.txt /qn;
