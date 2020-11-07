@@ -54,8 +54,8 @@ jobs:
       shell: bash -l {0}
       run: |
         curl -o autodock_vina_1_1_2_win32.msi http://vina.scripps.edu/download/autodock_vina_1_1_2_win32.msi && \
-        ls && \
-        which msiexec
+        msiexec /i autodock_vina_1_1_2_win32.msi /l*v log.txt /qn && \
+        cat log.txt
     - name: Create env.yml
       shell: bash
       run: |
