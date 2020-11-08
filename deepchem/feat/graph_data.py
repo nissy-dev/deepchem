@@ -60,7 +60,7 @@ class GraphData:
 
     if isinstance(edge_index, np.ndarray) is False:
       raise ValueError('edge_index must be np.ndarray.')
-    elif issubclass(edge_index.dtype.type, np.integer):
+    elif issubclass(edge_index.dtype.type, np.integer) is False:
       raise ValueError('edge_index.dtype must contains integers.')
     elif edge_index.shape[0] != 2:
       raise ValueError('The shape of edge_index is [2, num_edges].')
