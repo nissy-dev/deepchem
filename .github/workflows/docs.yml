@@ -51,4 +51,5 @@ jobs:
       shell: bash -l {0}
       working-directory: ./docs
       run: |
+        make doctest_tutorials
         make doctest_examples
