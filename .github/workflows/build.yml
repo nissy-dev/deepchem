@@ -93,7 +93,7 @@ jobs:
         python-version: [3.7]
     steps:
     - uses: actions/checkout@v2
-    - name: Cache pip modules for Windows
+    - name: Cache pip packages for Windows
       uses: actions/cache@v2
       with:
         path: ~\AppData\Local\pip\Cache

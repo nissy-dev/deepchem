@@ -15,7 +15,7 @@ jobs:
         python-version: [3.7]
     steps:
     - uses: actions/checkout@v2
-    - name: Cache pip modules for Linux
+    - name: Cache pip packages for Linux
       uses: actions/cache@v2
       with:
         path: ~/.cache/pip

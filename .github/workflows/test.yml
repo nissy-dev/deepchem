@@ -17,11 +17,9 @@ jobs:
         include:
           - os: ubuntu-latest
             python-version: 3.6
-          - os: ubuntu-latest
-            python-version: 3.8
     steps:
     - uses: actions/checkout@v2
-    - name: Cache pip modules for Linux
+    - name: Cache pip packages for Linux
       if: startsWith(runner.os, 'Linux')
       uses: actions/cache@v2
       with:
@@ -29,7 +27,7 @@ jobs:
         key: ${{ runner.os }}-pip-${{ hashFiles('env.*.yml') }}
         restore-keys: |
           ${{ runner.os }}-pip-
-    - name: Cache pip modules for MacOS
+    - name: Cache pip packages for MacOS
       if: startsWith(runner.os, 'macOS')
       uses: actions/cache@v2
       with:
@@ -37,7 +35,7 @@ jobs:
         key: ${{ matrix.os }}-pip-${{ hashFiles('env.*.yml') }}
         restore-keys: |
           ${{ runner.os }}-pip-
-    - name: Cache pip modules for Windows
+    - name: Cache pip packages for Windows
       if: startsWith(runner.os, 'Windows')
       uses: actions/cache@v2
       with:
@@ -52,6 +50,9 @@ jobs:
     - name: Install prerequisites for XGBoost and LightGBM (MacOS)
       if: startsWith(runner.os, 'macOS')
       run: brew update && brew install libomp
+    - name: grant Full Access to c:\windows\temp directory
+      if: startsWith(runner.os, 'Windows')
+      run: icacls "C:\Windows\Temp" /q /c /t /grant Users:F /T
     - name: Create env.yml
       shell: bash
       run: |
