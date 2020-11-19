@@ -11,21 +11,20 @@ heel? Fear not for you have :code:`Transformer` objects.
 .. contents:: Contents
     :local:
 
-
 General Transformers
 --------------------
-
-MinMaxTransformer
-^^^^^^^^^^^^^^^^^
-
-.. autoclass:: deepchem.trans.MinMaxTransformer
-  :members:
-  :inherited-members:
 
 NormalizationTransformer
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. autoclass:: deepchem.trans.NormalizationTransformer
+  :members:
+  :inherited-members:
+
+MinMaxTransformer
+^^^^^^^^^^^^^^^^^
+
+.. autoclass:: deepchem.trans.MinMaxTransformer
   :members:
   :inherited-members:
 
@@ -43,20 +42,6 @@ LogTransformer
   :members:
   :inherited-members:
 
-BalancingTransformer
-^^^^^^^^^^^^^^^^^^^^
-
-.. autoclass:: deepchem.trans.BalancingTransformer
-  :members:
-  :inherited-members:
-
-DuplicateBalancingTransformer
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-.. autoclass:: deepchem.trans.DuplicateBalancingTransformer
-  :members:
-  :inherited-members:
-
 CDFTransformer
 ^^^^^^^^^^^^^^
 
@@ -68,6 +53,20 @@ PowerTransformer
 ^^^^^^^^^^^^^^^^
 
 .. autoclass:: deepchem.trans.PowerTransformer
+  :members:
+  :inherited-members:
+
+BalancingTransformer
+^^^^^^^^^^^^^^^^^^^^
+
+.. autoclass:: deepchem.trans.BalancingTransformer
+  :members:
+  :inherited-members:
+
+DuplicateBalancingTransformer
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. autoclass:: deepchem.trans.DuplicateBalancingTransformer
   :members:
   :inherited-members:
 
@@ -115,3 +114,13 @@ ANITransformer
 .. autoclass:: deepchem.trans.ANITransformer
   :members:
   :inherited-members:
+
+Base Transformer (for develop)
+-------------------------------
+
+The :code:`dc.trans.Transformer` class is the abstract parent class
+for all transformers. This class should never be directly initialized,
+but contains a number of useful method implementations.
+
+.. autoclass:: deepchem.trans.Transformer
+  :members:

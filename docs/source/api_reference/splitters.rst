@@ -29,21 +29,6 @@ RandomSplitter
   :inherited-members:
   :exclude-members: __init__
 
-IndexSplitter
-^^^^^^^^^^^^^
-
-.. autoclass:: deepchem.splits.IndexSplitter
-  :members:
-  :inherited-members:
-  :exclude-members: __init__
-
-SpecifiedSplitter
-^^^^^^^^^^^^^^^^^
-
-.. autoclass:: deepchem.splits.SpecifiedSplitter
-  :members:
-  :inherited-members:
-
 
 RandomGroupSplitter
 ^^^^^^^^^^^^^^^^^^^
@@ -67,6 +52,21 @@ SingletaskStratifiedSplitter
   :members:
   :inherited-members:
 
+IndexSplitter
+^^^^^^^^^^^^^
+
+.. autoclass:: deepchem.splits.IndexSplitter
+  :members:
+  :inherited-members:
+  :exclude-members: __init__
+
+SpecifiedSplitter
+^^^^^^^^^^^^^^^^^
+
+.. autoclass:: deepchem.splits.SpecifiedSplitter
+  :members:
+  :inherited-members:
+
 TaskSplitter
 ^^^^^^^^^^^^
 
@@ -77,6 +77,14 @@ TaskSplitter
 
 Molecule Splitters
 ------------------
+
+ScaffoldSplitter
+^^^^^^^^^^^^^^^^
+
+.. autoclass:: deepchem.splits.ScaffoldSplitter
+  :members:
+  :inherited-members:
+  :exclude-members: __init__
 
 MolecularWeightSplitter
 ^^^^^^^^^^^^^^^^^^^^^^^
@@ -101,19 +109,19 @@ ButinaSplitter
   :members:
   :inherited-members:
 
-ScaffoldSplitter
-^^^^^^^^^^^^^^^^
-
-.. autoclass:: deepchem.splits.ScaffoldSplitter
-  :members:
-  :inherited-members:
-  :exclude-members: __init__
-
-FingeprintSplitter
-^^^^^^^^^^^^^^^^^^
+FingerprintSplitter
+^^^^^^^^^^^^^^^^^^^
 
 .. autoclass:: deepchem.splits.FingerprintSplitter
   :members:
   :inherited-members:
   :exclude-members: __init__
 
+Base Splitter (for develop)
+----------------------------
+
+The :code:`dc.splits.Splitter` class is the abstract parent class for
+all splitters. This class should never be directly instantiated.
+
+.. autoclass:: deepchem.splits.Splitter
+  :members:

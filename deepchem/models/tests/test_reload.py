@@ -11,7 +11,7 @@ import tensorflow as tf
 import scipy
 from flaky import flaky
 from sklearn.ensemble import RandomForestClassifier
-from deepchem.molnet.load_function.chembl25_datasets import chembl25_tasks
+from deepchem.molnet.load_function.chembl25_datasets import CHEMBL25_TASKS
 from deepchem.feat import create_char_to_idx
 
 
@@ -282,48 +282,47 @@ def test_robust_multitask_classification_reload():
   assert scores[classification_metric.name] > .9
 
 
-# def test_normalizing_flow_model_reload():
-#   """Test that RobustMultitaskRegressor can be reloaded correctly."""
-#   from deepchem.models.normalizing_flows import NormalizingFlow, NormalizingFlowModel
-#   import tensorflow_probability as tfp
-#   tfd = tfp.distributions
-#   tfb = tfp.bijectors
-#   tfk = tf.keras
-#   tfk.backend.set_floatx('float64')
+def test_normalizing_flow_model_reload():
+  """Test that NormalizingFlowModel can be reloaded correctly."""
+  from deepchem.models.normalizing_flows import NormalizingFlow, NormalizingFlowModel
+  import tensorflow_probability as tfp
+  tfd = tfp.distributions
+  tfb = tfp.bijectors
+  tfk = tf.keras
 
-#   model_dir = tempfile.mkdtemp()
+  model_dir = tempfile.mkdtemp()
 
-#   Made = tfb.AutoregressiveNetwork(
-#       params=2, hidden_units=[512, 512], activation='relu')
+  Made = tfb.AutoregressiveNetwork(
+      params=2, hidden_units=[512, 512], activation='relu', dtype='float64')
 
-#   flow_layers = [tfb.MaskedAutoregressiveFlow(shift_and_log_scale_fn=Made)]
-#   # 3D Multivariate Gaussian base distribution
-#   nf = NormalizingFlow(
-#       base_distribution=tfd.MultivariateNormalDiag(
-#           loc=np.zeros(2), scale_diag=np.ones(2)),
-#       flow_layers=flow_layers)
+  flow_layers = [tfb.MaskedAutoregressiveFlow(shift_and_log_scale_fn=Made)]
+  # 3D Multivariate Gaussian base distribution
+  nf = NormalizingFlow(
+      base_distribution=tfd.MultivariateNormalDiag(
+          loc=np.zeros(2), scale_diag=np.ones(2)),
+      flow_layers=flow_layers)
 
-#   nfm = NormalizingFlowModel(nf, model_dir=model_dir)
+  nfm = NormalizingFlowModel(nf, model_dir=model_dir)
 
-#   target_distribution = tfd.MultivariateNormalDiag(loc=np.array([1., 0.]))
-#   dataset = dc.data.NumpyDataset(X=target_distribution.sample(96))
-#   final = nfm.fit(dataset, nb_epoch=1)
+  target_distribution = tfd.MultivariateNormalDiag(loc=np.array([1., 0.]))
+  dataset = dc.data.NumpyDataset(X=target_distribution.sample(96))
+  final = nfm.fit(dataset, nb_epoch=1)
 
-#   x = np.zeros(2)
-#   lp1 = nfm.flow.log_prob(x).numpy()
+  x = np.zeros(2)
+  lp1 = nfm.flow.log_prob(x).numpy()
 
-#   assert nfm.flow.sample().numpy().shape == (2,)
+  assert nfm.flow.sample().numpy().shape == (2,)
 
-#   reloaded_model = NormalizingFlowModel(nf, model_dir=model_dir)
-#   reloaded_model.restore()
+  reloaded_model = NormalizingFlowModel(nf, model_dir=model_dir)
+  reloaded_model.restore()
 
-#   # Check that reloaded model can sample from the distribution
-#   assert reloaded_model.flow.sample().numpy().shape == (2,)
+  # Check that reloaded model can sample from the distribution
+  assert reloaded_model.flow.sample().numpy().shape == (2,)
 
-#   lp2 = reloaded_model.flow.log_prob(x).numpy()
+  lp2 = reloaded_model.flow.log_prob(x).numpy()
 
-#   # Check that density estimation is same for reloaded model
-#   assert np.all(lp1 == lp2)
+  # Check that density estimation is same for reloaded model
+  assert np.all(lp1 == lp2)
 
 
 def test_robust_multitask_regressor_reload():
@@ -1001,7 +1000,7 @@ def test_smiles2vec_reload():
   data_points = 10
 
   loader = dc.data.CSVLoader(
-      tasks=chembl25_tasks, smiles_field='smiles', featurizer=feat)
+      tasks=CHEMBL25_TASKS, smiles_field='smiles', featurizer=feat)
   dataset = loader.create_dataset(
       inputs=[dataset_file], shard_size=10000, data_dir=tempfile.mkdtemp())
   y = np.random.randint(0, 2, size=(data_points, n_tasks))

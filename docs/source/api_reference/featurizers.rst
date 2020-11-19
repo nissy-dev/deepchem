@@ -240,6 +240,12 @@ ElementPropertyFingerprint
   :members:
   :inherited-members:
 
+ElemNetFeaturizer
+*****************
+
+.. autoclass:: deepchem.feat.ElemNetFeaturizer
+  :members:
+
 MaterialStructureFeaturizer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
