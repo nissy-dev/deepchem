@@ -125,6 +125,12 @@ jobs:
       shell: bash -l {0}
       run: |
         CHANGED_FILES=`git diff --name-only $COMMIT_RANGE | grep .py$ | grep -v contrib/`
+    - name: Yapf (version 0.22.0)
+      # on Windows, yapf raise the strange error..., so ignore
+      if: runner.os == 'Linux' || runner.os == 'macOS'
+      shell: bash -l {0}
+      run: |
+        CHANGED_FILES=`git diff --name-only $COMMIT_RANGE | grep .py$ | grep -v contrib/`
         yapf -d $CHANGED_FILES
     - name: Flake8
       shell: bash -l {0}
